@@ -1,0 +1,182 @@
+%-----------------------------------------------------------------------------
+%
+%               Template for sigplanconf LaTeX Class
+%
+% Name:         sigplanconf-template.tex
+%
+% Purpose:      A template for sigplanconf.cls, which is a LaTeX 2e class
+%               file for SIGPLAN conference proceedings.
+%
+% Guide:        Refer to "Author's Guide to the ACM SIGPLAN Class,"
+%               sigplanconf-guide.pdf
+%
+% Author:       Paul C. Anagnostopoulos
+%               Windfall Software
+%               978 371-2316
+%               paul@windfall.com
+%
+% Created:      15 February 2005
+%
+%-----------------------------------------------------------------------------
+
+
+\documentclass{llncs2e/llncs}
+
+
+% The following \documentclass options may be useful:
+
+% preprint      Remove this option only once the paper is in final form.
+% 10pt          To set in 10-point type instead of 9-point.
+% 11pt          To set in 11-point type instead of 9-point.
+% authoryear    To obtain author/year citation style instead of numeric.
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+
+\usepackage{multirow}
+\usepackage{algorithm} 
+\usepackage{algorithmic}
+%\usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' 
+\usepackage{listings}
+%\usepackage{color}
+
+%\definecolor{dkgreen}{rgb}{0,0.6,0}
+%\definecolor{gray}{rgb}{0.5,0.5,0.5}
+%\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+%\lstset{frame=tb,
+%  language=Java,
+%  aboveskip=3mm,
+%  belowskip=3mm,
+%  showstringspaces=false,
+%  columns=flexible,
+%  basicstyle={\small\ttfamily},
+%  numbers=none,
+%  numberstyle=\tiny\color{gray},
+%  keywordstyle=\color{blue},
+%  commentstyle=\color{dkgreen},
+% stringstyle=\color{mauve},
+%  breaklines=true,
+%  breakatwhitespace=true,
+%  tabsize=3
+%}
+
+
+\begin{document}
+
+\special{papersize=8.5in,11in}
+\setlength{\pdfpageheight}{\paperheight}
+\setlength{\pdfpagewidth}{\paperwidth}
+
+\newcommand{\ignore}[1]{}
+
+%\conferenceinfo{CONF 'yy}{Month d--d, 20yy, City, ST, Country} 
+%\copyrightyear{20yy} 
+%\copyrightdata{978-1-nnnn-nnnn-n/yy/mm} 
+%\doi{nnnnnnn.nnnnnnn}
+
+% Uncomment one of the following two, if you are not going for the 
+% traditional copyright transfer agreement.
+
+%\exclusivelicense                % ACM gets exclusive license to publish, 
+                                  % you retain copyright
+
+%\permissiontopublish             % ACM gets nonexclusive license to publish
+                                  % (paid open-access papers, 
+                                  % short abstracts)
+
+%\titlebanner{banner above paper title}        % These are ignored unless
+%\preprintfooter{short description of paper}   % 'preprint' option specified.
+
+\title{Memory-Efficient and Time-Bounded Runtime Monitoring for Resource-Constrained Systems}
+%\subtitle{Subtitle Text, if any}
+
+\author{Rahul Purandare\inst{1} \and Ambreen Bashir\inst{1} \and Aritra Dhar\inst{2} \and Garvita Allabadi\inst{1}}
+\institute{IIITD, New Delhi - 110020, India \email {purandare@iiitd.ac.in}\and Xerox Research Center, Bangalore, India \email {aritra.dhar@xerox.com}}
+
+      %     {purandare@iiitd.ac.in}
+%\authorinfo{Ambreen Bashir}
+   %      {IIITD, New Delhi - 110020, India}
+      %    {Ambreen1233@iiitd.ac.in}
+      
+
+\maketitle
+
+\begin{abstract}
+%Runtime monitoring is employed in practice to ensure that a program shows expected behavior during its execution. Past decade has seen a prominent rise in the number of novel runtime monitoring frameworks and tools due to the promise shown by monitoring techniques. Many of these tools have been used effectively to verify typestate properties that are associated with legal Application Programming Interface (API) usages. In spite of their effectiveness, the tools have been occasionally found to incur significant runtime overheads, which could be even larger than the program's own execution time, particularly when the properties are associated with multiple objects. Moreover, the overheads have also been found to be extremely variable even when handling the events of the same kind. Such undesirable overheads may restrict the application of monitoring only to test environments or even worse, make it infeasible. In addition to time overheads, the monitoring tools also consume significant memory to keep monitors. Occasionally this extra memory outweighs the program's own memory requirements. All of these limitations make runtime monitoring infeasible for real-time programs that are typically executed in resource-constrained environments, where functional as well as non-functional requirements are critical.In this work, we propose a monitoring framework that investigates the trade-off between the runtime overhead and the error reporting. Our approach is motivated by the fact that there is a large redundancy among monitors in terms of their behavior which results in many monitors detecting same errors. The approach works by limiting the number of monitors based on heuristics that are related to the program execution context. In addition, the approach also limits the number of monitors that are associated with events related to a set of objects. As a result, the framework enables monitoring which consumes much less memory and provides worst-case bounds for the execution times of handling events. Moreover, our study based on some challenging typestate properties and DaCapo benchmarks indicates that our approach does not result in extra memory overhead. At the same time, it detects all the violations that an un-optimized approach detects.
+
+Runtime monitoring is employed in practice to ensure that a program shows expected behavior during its execution.  However, monitoring tools, particularly the ones which perform inline monitoring have been occasionally found to incur significant and unpredictable overheads in terms of memory and time. Due to this reason, employing monitoring in resource-constrained environment such as real-time embedded system environment has been a challenge. The challenge is particularly big when the properties are finite state, parameterised by objects, and can be associated with multiple objects. In this work, we propose a novel monitoring approach that investigates the trade-off between the memory overhead and the time boundedness, and the error reporting which are key attributes of a real-time embedded system. Our approach is motivated by the fact that there is a large redundancy among monitors in terms of their behavior which results in many monitors detecting same errors. This redundancy can be exploited to reduce the number of monitors, provide worst-case time bounds to monitoring operations, and improve the soundness of the optimized system. Our study based on a prototype implementation and some challenging combinations of finite state properties and DaCapo benchmarks indicates that the approach can effectively control the memory overhead and detect the violations that an unoptimized approach can.
+
+\end{abstract}
+
+%\category{D.2.5}{Testing and Debugging}{Monitors}
+
+% general terms are not compulsory anymore, 
+% you may leave them out
+%\terms
+%Performance, Verification
+
+\keywords
+monitoring, memory optimization, boundedness, scalability, reuse.
+
+\input{sections/introduction}
+
+\input{sections/motivation}
+
+\input{sections/approach}
+
+%\input{sections/costmodel}
+
+\input{sections/results}
+
+\input{sections/related}
+
+\input{sections/conclusion}
+
+
+
+%\appendix
+%\input{sections/costmodel}
+
+%This is the text of the appendix, if you need one.
+
+%\acks
+
+%Acknowledgments, if needed.
+
+% We recommend abbrvnat bibliography style.
+
+\bibliographystyle{abbrvnat}
+
+% The bibliography should be embedded for final submission.
+\bibliography{paper}
+
+\ignore{
+\begin{thebibliography}{}
+\softraggedright
+
+\bibitem[Smith et~al.(2009)Smith, Jones]{smith02}
+P. Q. Smith, and X. Y. Jones. ...reference text..
+
+\end{thebibliography}
+}
+
+
+
+
+%\appendix
+%\input{sections/costmodel}
+
+%This is the text of the appendix, if you need one.
+
+
+\end{document}
+
+%                       Revision History
+%                       -------- -------
+%  Date         Person  Ver.    Change
+%  ----         ------  ----    ------
+
+%  2013.06.29   TU      0.1--4  comments on permission/copyright notices
+
