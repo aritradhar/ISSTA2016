@@ -91,23 +91,25 @@ Resource-Constrained Systems}
 % % same time, it detects all the violations that an un-optimized approach detects.
 
 Runtime monitoring is employed in practice to ensure that a program shows 
-expected behavior during its execution.  However, monitoring tools, particularly 
-the ones which perform inline monitoring have been occasionally found to incur 
-significant and unpredictable overheads in terms of memory and time. Due to this 
-reason, employing monitoring in resource-constrained environment such as 
-real-time embedded system environment has been a challenge. The challenge is 
-particularly big when the properties are finite state, parameterized by objects, 
-and can be associated with multiple objects. In this work, we propose a novel 
-monitoring approach that investigates the trade-off between the memory overhead 
-and the time boundedness, and the error reporting which are key attributes of a 
-real-time embedded system. Our approach is motivated by the fact that there is a 
-large redundancy among monitors in terms of their behavior which results in many 
-monitors detecting same errors. This redundancy can be exploited to reduce the 
+expected behavior during its execution. However, monitoring has been occasionally
+found to incur large and unpredictable overheads in terms of memory and time.
+which makes its application challenging in resource-constrained environments.
+Past research has shown that this challenge is particularly big when the properties
+the programs are monitored for are finite state, parameterized, 
+and associated with collection objeccts. In this work, we propose a novel 
+monitoring approach that investigates various trade-offs associated with
+memory overhead of monitoring, the time boundedness of monitoring operations, and
+the error reporting which are key attributes of resource-constrained systems.
+Our approach is motivated by two observations which indicate that i) there is a
+large redundancy among monitors in terms of their behaviors resulting in many
+monitors detecting same errors, and ii) monitored events that belong to distinct monitors
+are temporally separated. The monitor redundancy can be exploited to reduce the 
 number of monitors, provide worst-case time bounds to monitoring operations, and 
-improve the soundness of the optimized system. Our study based on a prototype 
-implementation and some challenging combinations of finite state properties and 
-DaCapo benchmarks indicates that the approach can effectively control the memory 
-overhead and detect the violations that an unoptimized approach can.
+improve the soundness of the optimized monitoring system. Our study based on a prototype 
+implementation and using DaCapo benchmarks and some challenging combinations 
+of finite state properties associated with collection objects indicates that the approach can 
+effectively limit the memory overhead and monitoring operations time without compromising
+with the error reporting and adding extra runtime overhead.
 
 %%
 \end{abstract}
