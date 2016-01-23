@@ -3,85 +3,90 @@
 
 Modern software applications are complex and diverse in nature. They come in 
 various forms ranging from large web-based systems that serve large number of 
-user requests in reasonable time to mobile applications that run on small 
+user requests in reasonable time to applications that run on small 
 hand-held mobile devices. Irrespective of their forms, they pose challenges for 
 the tools that perform automatic verification either statically or dynamically. 
 Even though useful, the static analysis techniques often produce numerous false 
 positives which are hard to analyse \cite{}, and hence, researchers have 
 invested their time and effort in developing runtime monitoring techniques that 
-are precise and can scale well.
+are precise and can scale to realistic programs.
 
 In spite of their effectiveness, the monitoring tools have been occasionally 
-found to incur significant memory and runtime overheads. The overheads have been 
-particularly very high when the properties, the programs being monitored for, 
-are finite state and are associated with multiple objects. In some cases the 
-memory overheads have been found to be larger than the programs' own memory 
-footprints and the time overheads have been greater than programs' execution 
-times \cite{}. This would be even a bigger concern considering the fact that in 
-practice, programmers would like to track several properties at a time \cite{}.
+found to incur considerable memory and execution time overheads making their deployment
+in the production or even test environments challenging. Monitoring
+can consume memory and time resources that are even greater than the 
+ones consumed by the program being monitored especially when the properties of interest
+are finite-state and are associated with objects that are generated
+in large numbers such as collections and iterators \cite{}. Monitoring overhead can be a big
+concern considering the fact that in 
+practice programmers would like to track several properties at a time cumulatively adding the overheads of
+individual properties \cite{}. To make the matter worse, the monitoring operations corresponding to an
+event may take arbitrarily long time when the properties are associated with multiple objects.
 
-The overheads are unpredictable since they largely depend on the program and 
+The overheads are unpredictable since they depend on the program and 
 property interactions. For a given program and a given property, the 
-interactions depend on the executed program paths. The overhead can be variable 
-even for similar kind of events owing to the fact that variable number of 
+interactions depend on the executed program paths. The monitoring operations
+can consume variable execution times even for similar events owing to the fact that variable number of 
 monitors may be associated with each one of those events and each one of the 
-monitors needs to be tracked after the occurrence of the event. In the worst 
-case, this number can be unbounded \cite{}.
+monitors needs to be tracked after the occurrence of these events. This number can grow
+rapidly and is theoretically unbounded \cite{}.
 
-Large overheads and their unpredictable nature pose serious challenges to 
-monitoring especially when the available memory is limited and the system 
-performance in terms of time needs to be guaranteed. For real-time embedded 
-applications, developers need to provide bounds for the worst case execution 
-times of system operations. As a result, the usage of runtime monitoring is 
-restricted either to testing environments or to the production environments in 
-which resources are abundant and performance requirements are less stringent. 
-However, all modern systems including the the embedded as well as many web-based 
-systems have constraints on their resources considering that the applications 
+Large and unpredictable overheads pose serious challenges to 
+monitoring since they adversely impact the system performance.
+%For real-time embedded 
+%applications, developers need to provide bounds for the worst case execution 
+%times of system operations.
+%As a result, the usage of runtime monitoring is 
+%restricted either to testing environments or to the production environments in 
+%which resources are abundant and performance requirements are less stringent. 
+Even though resource-constrained systems such as mobile and real-time embedded systems have
+more restrictive resource requirements, all modern systems including % the embedded as well as many
+web-based and cloud-based
+systems have practical constraints on their resources considering that the applications 
 they run are often CPU- as well as memory-intensive, and their performance is 
 expected to be high and predictable. Hence, in order to employ runtime 
 monitoring in the production environment, we need novel and efficient techniques 
-that consume less resources and provide guarantees about their performance. At 
-the same time, the 
-techniques should also be effective in catching property violations which is the 
+that consume less resources and provide guarantees about their performance.
+At the same time, the techniques should also be effective in catching property violations which is the 
 primary objective of runtime monitoring.
 
 Researchers have tried several approaches in the past, and developed tools to 
 monitor programs efficiently by keeping the overall overheads within limits by 
 turning off monitoring if it exceeds the time budget \cite{}. However, these 
 approaches do not deal with the properties that are related to multiple 
-properties, and do not give guarantees about the worst-case execution times of 
+objects, and do not give guarantees about the worst-case execution times of 
 monitoring operations. Moreover, they do not directly control the memory 
 overheads. Other approaches either do not deal with finite-state properties or 
 they do not perform inline monitoring \cite{}. Finite state property monitoring 
 allows us to check programs for properties that are more expressive, whereas 
 inline monitoring allows us to keep the detection latency within limits, and 
-also provides opportunities for performing evasive actions that may avoid the 
-errors \cite{}.
+also provides opportunities for performing evasive actions avoiding failures \cite{}.
 
 In this work, we propose a novel inline monitoring technique that investigates 
-the trade-off between the boundedness in terms of memory and worst case 
-execution time, and  the error reporting. Our approach is motivated by the 
+the trade-off between limited resources namely memory and monitor execution
+times, and  the error reporting. Our approach is motivated by the 
 observation that there is a large redundancy among monitors in terms of their 
-behavior which results in many monitors detecting the same error. However, 
-programmers would be interested in catching distinct errors, rather than several 
+behavior which results in many monitors detecting a same error. However, 
+programmers are interested in catching distinct errors, rather than several 
 instances of the same error. The technique works by limiting the number of 
 monitors based on heuristics that are related to the program's execution 
-context. When the properties are related to multiple objects, there may be 
-several monitors waiting for a particular event. Since the number of these 
-monitors is not bounded, the approach also limits the number of monitors that 
-are associated with events related to a set of objects. As a result, the 
-framework enables monitoring which consumes much less memory and provides 
-worst-case bounds for the execution 
-times of handling events. Moreover, our study based on some challenging 
-typestate properties and DaCapo benchmarks indicates that our approach does not 
-result in extra memory overhead. At the same time, it detects all the violations 
-that an un-optimized approach detects.
+context. When the properties are related to multiple objects, there can be 
+several monitors waiting for an event. Since the number of these 
+monitors is unbounded, the technique puts a hard limit on the number of monitors
+associated with the event. As a result, it consumes much less memory and provides 
+tight worst-case bounds on the execution times of handling events. In addition to
+these benefits, our study based on some challenging finite-state properties
+and DaCapo benchmarks indicates that the technique has a potential to detect
+all violations that an un-optimized approach would detect without
+incurring extra runtime overhead.
 
 The contribution of our research is double-fold. First, we present a novel 
-approach that is memory-efficient and deterministic. Second, we conduct a study 
-using three DaCapo benchmarks \cite{} and two properties associated with 
-standard Java library that have been found to be challenging to monitor in the 
-past \cite{}. The results of our study indicate the potential in our approach.
+approach that is memory-efficient and time-deterministic. Second, we present a study 
+based on a prototype implementation of our approach and some realistic benchmarks 
+and properties which indicates the effectiveness of our approach.
+
+
+
 
 
 \ignore{Runtime monitoring is employed in practice to ensure that a program 
