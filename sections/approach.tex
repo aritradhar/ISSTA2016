@@ -1,9 +1,10 @@
-\section{Memory-Efficient and Deterministic Monitoring}
+\section{Monitoring Approach}
 \label{sec:approach}
 
 Our monitoring approach strives to reduce the memory requirements of finite 
 state monitoring. At the same time it also tries to make monitoring more 
-deterministic. The approach is based on the following mechanisms:
+time-deterministic without compromising much with the error reporting.
+The approach is based on the following mechanisms.
 
 \paragraph{Context-based sampling} We use context-based sampling to control the 
 number of monitors. The motivation for this approach comes from our observation 

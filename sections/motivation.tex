@@ -1,4 +1,4 @@
-\section{Motivation}
+\section{Background and Motivation}
 \label{sec:motivation}
 
 \begin{figure}[t]
@@ -10,10 +10,10 @@
 
 Figure~\ref{fig:unsafeiteratorfsa} depicts a finite state automaton (FSA) that 
 models a property \texttt{UnsafeIterator} which is defined by the API of Java 
-standard library and is related to a \textsf{Collection} and an 
-\textsf{Iterator} object. It specifies the rule that a collection should not be 
+standard library and is related to a \texttt{Collection} as well as an 
+\texttt{Iterator} object. It specifies the rule that a collection should not be 
 updated while it is being iterated. The symbols \textit{create}, 
-\textit{update}, and {next} correspond to creating an iterator from a 
+\textit{update}, and \textit{next} correspond to creating an iterator from a 
 collection, modifying a collection, and iterating over a collection 
 respectively. Hence, as shown in the figure, the symbol \textit{next} observed 
 after the symbol \textit{update} would indicate iteration after a collection 
@@ -24,7 +24,7 @@ operations or events encountered.
 
 In practice, a collection object may get iterated several times in its life 
 time. On the occurrence of a \textit{creation} event, that may correspond to the 
-call to \texttt{Iterator()} method in the \textsf{Collection} interface that 
+call to \textmd{Iterator()} method in the \textmd{Collection} interface that 
 returns an iterator, a monitoring system may create a new monitor for tracking. 
 The newly created monitor is associated with the collection object and also the 
 iterator object. It is easy to see that since the collection and iterator are 
@@ -35,7 +35,7 @@ them.
 
 Similar issue arises with another iterator property \texttt{HasNext} depicted in 
 Figure~\ref{fig:hasnextfsa}. It specifies that a call to the \textit{hasNext} 
-method must be give before calling \textit{next} method to ensure that an object 
+method must be given before calling \textit{next} method to ensure that an object 
 exists before it is used. Collections and iterators are not only commonly used 
 objects, but often the sources of error \cite{}. 
 
@@ -91,9 +91,9 @@ programs for all of the interesting properties together, not separately. This
 only means that runtime monitoring would become extremely difficult or even 
 infeasible when properties are monitored simultaneously. Purandare et al. 
 present a technique that compacts several monitors into one and tracks programs 
-for multiple properties simultaneously. However, even though the compaction 
+for multiple properties simultaneously \cite{}. However, even though the compaction 
 reduces the footprint of a monitored program to a certain extent, the footprint 
-can still be significant for most systems and prohibitively high for 
+can still be significant and prohibitively high for 
 resource-constrained systems. This is owing to the fact that the compaction 
 reaches its limit quickly since 
 it involves taking a finite state automata (FSA) product which may grow 
@@ -120,33 +120,30 @@ overheads.}
 \end{table}
 \label{table:consumedmemory}
 
-In addition to the overall high overheads the properties associated with 
+In addition to the overall high overheads, for the properties associated with 
 multiple objects, such as \texttt{UnsafeIterator} the cost of handling 
-individual events can also be very high. This  happens since large number of 
+individual events can also be very high. This  happens since theoretically unbounded number of 
 monitors may get associated with the events depending on the program and 
-property interactions. As a result the cost of tracking one single event becomes 
-unpredictable, and can be large. In fact, it was observed while monitoring for 
+property interactions. As a result, the cost of tracking one single event can become 
+unpredictably large. In fact, it was observed while monitoring for 
 \texttt{UnsafeIterator} property for the \textsf{DaCapo} benchmark 
 \textit{bloat} that as many as 1548 monitors had got associated with a single 
 \textsf{Collection} object. Each of these monitors needs to be tracked when an 
 event is seen by the corresponding receiver object. As a result, monitoring 
-becomes nondeterministic in terms of time. The runtime overhead may still be 
-high, but not being able to provide bounds to the monitoring execution can 
+actions become nondeterministic in terms of time. Not being able to provide
+bounds to the monitoring execution can 
 restrict the usage of monitoring to nonreal-time systems or systems where 
 performance guarantees are not essential. 
 However, most systems in practice would suffer due to degraded performance if 
-the memory overhead and time predictability cannot be controlled.
+the memory overheads and execution times of monitoring cannot be controlled.
 
 %We also made some fine-grain observations regarding the redundancy in the 
-behavior of monitors.  For the same DaCapo benchmarks and properties, 
-Table~\ref{table:joinpoints} presents the number of \textit{observable} 
-statements that generate monitoring events. Even though monitors are generated 
-in millions, observable statements are only a few. This indicates that there is 
-a reason to believe that the \textit{programming contexts} under which these 
-statements are invoked are limited. For this work, we define a programming 
-context as a method call stack. In order to understand this redundancy, we 
-monitored \textit{bloat} and \textit{pmd} for property \texttt{HasNext}, and 
-really
+%behavior of monitors.  For the same DaCapo benchmarks and properties, 
+%Table~\ref{table:joinpoints} presents the number of \textit{observable} 
+%statements that generate monitoring events. Even though monitors are generated 
+%in millions, observable statements are only a few. This indicates that there is 
+%a reason to believe that the \textit{programming contexts} under which these 
+%statements are invoked are limited. 
 
 For the same DaCapo benchmarks and properties, we made some fine-grain 
 observations regarding the redundancy in the behavior of monitors. We observed 
@@ -154,19 +151,19 @@ that the 42 errors reported while monitoring \textit{bloat}  for property
 \texttt{HasNext} could be partitioned into two classes of errors such that all 
 errors in a class had a similar \textit{execution context}. Similarly, we could 
 divide 333 errors reported by \textit{pmd} into two classes. For this work, we 
-associated an execution context with a call stack and the program counter, and 
-the data was collected  by considering limited execution context for efficiency 
+associated an execution context with a method calling sequence
+%a call stack and the program counter,
+and the data was collected  by considering limited execution context for efficiency 
 reasons. These observations indicate that many monitors catch redundant errors, 
 which are not so useful to developers. Ideally, the reporting should only be 
 performed for distinct errors which means catching only thee distinct errors for 
 \textit{bloat} and two for \textit{pmd} would suffice. Hence, we believe that 
 monitoring performed by sampling objects based on the program execution context 
-could 
-be more effective and would require less resources.
+could be effective and would require less resources. 
 
 In this work, we present a runtime verification approach that tries to exploit 
 the redundancy in the monitor behavior and retain only the ones that show 
-distinct behavior. As a result, it improves on memory efficiency as well as time 
+distinct behavior. As a result, it improves on memory efficiency as well as execution time 
 determinism. The approach has been described in detail in 
 Section~\ref{sec:approach}.
 
