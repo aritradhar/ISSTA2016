@@ -90,24 +90,25 @@
 % % same time, it detects all the violations that an un-optimized approach detects.
 
 Runtime monitoring is employed in practice to ensure that a program shows 
-expected behavior during its execution. However, monitoring has been occasionally
-found to incur large and unpredictable overheads in terms of memory and time
-which makes its application challenging in resource-constrained environments.
-Past research has shown that this challenge is particularly big when the properties
-the programs are monitored for are finite state, parameterized, 
-and associated with objects that are created in large numbers. In this work, we propose a novel 
-monitoring approach that investigates various trade-offs associated with
-memory overhead of monitoring, the execution times of monitoring operations, and
-the error reporting which are key attributes of resource-constrained systems.
-Our approach is motivated by two key observations that i) there is a
-prominent behavioral redundancy among monitors resulting in more than one
-monitors detecting same errors, and ii) there is a temporal separation among monitored events
-that belong to distinct monitors. These can be exploited to reduce the 
-number of monitors, provide compact worst-case time bounds to monitoring operations, without
-compromising much with the soundness of the optimized monitoring system. Our study based on a prototype 
-implementation and using some challenging combinations of finite state properties and DaCapo benchmarks
-indicates that the approach can effectively control the memory overhead and worst-case execution times
-without adding extra runtime overhead.
+expected behavior during its execution. However, monitoring has been 
+occasionally found to incur large and unpredictable overheads in terms of memory 
+and time, which makes its application challenging in resource-constrained 
+environments. Past research has shown that this challenge is particularly big 
+when the properties the programs are monitored for are finite state, 
+parameterized, and associated with objects that are created in large numbers. In 
+this work, we propose a novel monitoring approach that investigates various 
+trade-offs associated with memory overhead of monitoring, the execution times of 
+monitoring operations, and the error reporting, which are key attributes of 
+resource-constrained systems. Our approach is motivated by two key observations. 
+First, there is prominent behavioral redundancy among monitors resulting in more 
+than one monitors detecting same errors. Second, there is a temporal separation 
+among monitored events that belong to distinct monitors. We leverage these 
+observations to reduce the number of monitors, and provide compact worst-case 
+time bounds to monitoring operations, without compromising much with the 
+soundness of the optimized monitoring system. Evaluation of our prototype 
+implementation using challenging combinations of finite state properties and 
+DaCapo benchmarks indicates that our approach can effectively control the memory 
+overhead and worst-case execution times without adding extra runtime overhead.
 
 %%
 \end{abstract}
