@@ -5,7 +5,7 @@ As discusssed in Section~\ref{subsubsec:efficiencyanddeterminism} our approach
 provides worst-case time bounds to all monitoring operations making it 
 time-deterministic. Moreover, the approach is complete and guarantees no false 
 positives. However, it was was important to understand its effectiveness in the 
-memory reduction and the error reporting. Hence, we focussed on two research 
+memory reduction and the error reporting. Hence, we focused on two research 
 questions.
 
 {\bf RQ1:} Does our approach lead to substantially save the memory consumed by 
@@ -40,9 +40,29 @@ a large number of monitors. Property \texttt{HasNext} was particularly useful
 since two of the three benchmarks reported property violations which we could 
 use for the comparison in our study. For this property, we added an extra 
 \textit{creation} event for the convenience so that the monitor creation happens 
-only 
-for the first time the system encounters the object. Property 
+only  for the first time the system encounters the object. Property 
 \texttt{UnsafeIterator} already had a well-defined creation event.
+
+
+\myparagraph{DaCapo instrumentation} We have used \texttt{Soot}~\cite{soot} to
+instrument Dacapo benchmarks. \code{getStackTrace()} method can be used to
+fetch current stack trace but it introduces overhead. To mitigate this, we have
+instrumented each of the methods of DaCapo benchmark with a static
+\code{integer} field which is populated with an unique method id represented by
+a $16$ bit \code{integer}. We have also simulate the stack trace by using a
+circular array which contains these method id's. The circular array is
+implemented by a $64$ bit \code{long}.
+
+\lstset{escapeinside={/*@}{@*/}, language=Java , caption=\bf Method trace
+implementation., label=snippet:methodTrace} \begin{figure}[t]
+\begin{lstlisting}
+long trace;
+int counter = 0;
+void methodTrace(int methodID) {
+
+}
+\end{lstlisting}
+\end{figure}
 
 The time and memory overheads have been reported after using -converge option 
 provide by the DaCapo benchmark suite.
