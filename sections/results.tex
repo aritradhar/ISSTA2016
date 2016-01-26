@@ -51,7 +51,8 @@ instrumented each of the methods of DaCapo benchmark with a static
 \code{integer} field which is populated with an unique method id represented by
 a $16$ bit \code{integer}. We have also simulate the stack trace by using a
 circular array which contains these method id's. The circular array is
-implemented by a $64$ bit \code{long}.
+implemented by a $64$ bit \code{long}. A pseudo code of the method stack is
+described in Code~\ref{snippet:methodTrace}.
 
 \lstset{escapeinside={/*@}{@*/}, language=Java , caption=\bf Method trace
 implementation., label=snippet:methodTrace} \begin{figure}[t]
@@ -59,7 +60,15 @@ implementation., label=snippet:methodTrace} \begin{figure}[t]
 long trace;
 int counter = 0;
 void methodTrace(int methodID) {
-
+ switch (counter) {
+  case 0: id <<= 32; break;
+  case 1: id <<= 16; break
+  case 2: id <<= 0; break;
+  default: break;
+ }
+ trace |= id;
+ trace &= 0xffffffffffffL;
+ counter = (counter + 1) % traceLength;
 }
 \end{lstlisting}
 \end{figure}
