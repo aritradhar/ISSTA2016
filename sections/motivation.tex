@@ -1,6 +1,11 @@
 \section{Background and Motivation}
 \label{sec:motivation}
 
+%% UnsafeIterator is NOT a JAVA property!
+
+\subsection{Finite State Properties}
+\label{sec:motivation:fsp}
+
 \begin{figure}[t]
 \centering
   \includegraphics[scale=0.3, trim=0 5cm 0 6cm]{./images/unsafeiterator.pdf}
@@ -8,10 +13,12 @@
   \label{fig:unsafeiteratorfsa}
 \end{figure}
 
-%% UnsafeIterator is NOT a JAVA property!
-
-\subsection{Finite State Properties}
-\label{sec:motivation:fsp}
+\begin{figure}[t]
+\centering
+  \includegraphics[trim=20cm 0cm 15cm 1cm, scale=0.2]{./images/HasNext.pdf}
+  \caption[HasNext Property FSA]{HasNext Property.}
+  \label{fig:hasnextfsa}
+\end{figure}
 
 Figure~\ref{fig:unsafeiteratorfsa} depicts a finite state automaton (FSA), 
 which models iteration over a \code{Collection}, and codifies that a 
@@ -43,6 +50,47 @@ the \code{Iterator} objects.
 %% why is it a challenge
 \myparagraph{Challenges} Efficient monitoring of finite state properties is 
 thus usually a challenge due to:
+
+\begin{table}[t]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multirow{2}{*}{} & \multicolumn{2}{c|}{HasNext} & 
+\multicolumn{2}{c|}{UnsafeIterator} \\
+\cline{2-5} 
+                  & monitors     & events        & monitors         & events    
+ 
+      \\ \hline
+avrora            & 0.8M      & 1.5M       & 0.9M         & 1.4M          \\ 
+\hline
+bloat             & 1.9M      & 162M    & 1.9M          & 82M         \\ \hline
+pmd               & 8.6M      & 47M      & 1.9M          & 26M         \\ \hline
+\end{tabular}
+\caption{Number of monitors created and events generated for different programs 
+and properties}
+\end{table}
+\label{table:numofmonitors}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+%\multirow{2}{*}{} & \multicolumn{2}{c|}{HasNext} & 
+% \multicolumn{2}{c|}{UnsafeIterator} \\ \cline{2-5}
+ {} & Original & HasNext & UnsafeIterator\\
+ \hline
+avrora            & 0.1G      & 0.4G(300\%)       & 0.7G(600\%)           \\ 
+\hline
+bloat             & 0.5G      & 1.1G(120\%)    & 1.3G(160\%)              \\ 
+\hline
+pmd               & 0.5G      & 0.6G(20\%)     & 1.0G(100\%)             \\ 
+\hline
+\end{tabular}
+\caption{Memory consumption for different programs and properties with and 
+without monitoring. The figures in the parentheses are the percentage 
+overheads.}
+\end{table}
+\label{table:consumedmemory}
 
 \begin{challenges}
  \item \textbf{High monitor count}: Typically, in practice, a \code{Collection} 
@@ -100,7 +148,7 @@ that shared similar execution context, \ie\ the stack trace.
 % 
 % % we need not explain the optimization here.
 % For this work, we associated an execution context with a method calling 
-sequence
+% sequence
 % %a call stack and the program counter,
 % and the data was collected  by considering limited execution context for 
 % efficiency reasons. 
@@ -108,9 +156,10 @@ sequence
 These observations indicate that several monitors catch the same redundant 
 errors, which clearly is not intelligent reporting to the developer. Ideally, 
 the monitors must report only distinct errors, \ie\ only $3$ distinct errors 
-for \textit{bloat}, and $2$ for \textit{pmd}. Hence, we believe that 
-sampling-based monitoring that leverage the program execution context would be 
-significantly more effective and consume much less resources.
+for \textit{bloat}, and $2$ for \textit{pmd}. \note{This needs to be 
+clarified --- 2 distinct classes, and 3 and 2 errors respectively.} Hence, we 
+believe that sampling-based monitoring that leverage the program execution 
+context would be significantly more effective and consume much less resources.
 \end{challenges}
 
 %We also made some fine-grain observations regarding the redundancy in the 
@@ -161,13 +210,6 @@ exists before it is used. Collections and iterators are not only commonly used
 objects, but often the sources of error \cite{}.
 }
 
-\begin{figure}[t]
-\centering
-  \includegraphics[trim=20cm 0cm 15cm 1cm, scale=0.2]{./images/HasNext.pdf}
-  \caption[HasNext Property FSA]{HasNext Property.}
-  \label{fig:hasnextfsa}
-\end{figure}
-
 \ignore{
 Monitoring finite state properties efficiently has been a challenge due to the 
 large number of monitors that may get created and also due to the large number 
@@ -187,26 +229,6 @@ iterated.
 \end{itemize}
 }
 
-
-\begin{table}[t]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{} & \multicolumn{2}{c|}{HasNext} & 
-\multicolumn{2}{c|}{UnsafeIterator} \\
-\cline{2-5} 
-                  & monitors     & events        & monitors         & events     
-      \\ \hline
-avrora            & 0.8M      & 1.5M       & 0.9M         & 1.4M          \\ 
-\hline
-bloat             & 1.9M      & 162M    & 1.9M          & 82M         \\ \hline
-pmd               & 8.6M      & 47M      & 1.9M          & 26M         \\ \hline
-\end{tabular}
-\caption{Number of monitors created and events generated for different programs 
-and properties}
-\end{table}
-\label{table:numofmonitors}
-
 \ignore{
 Table~\ref{table:consumedmemory} presents the memory consumption of the 
 benchmarks with and without monitoring when JavaMOP 2.3 was used for monitoring. 
@@ -225,27 +247,6 @@ reaches its limit quickly since
 it involves taking a finite state automata (FSA) product which may grow 
 exponentially.
 }
-
-\begin{table}[t]
-\centering
-\begin{tabular}{|c|c|c|c|}
-\hline
-%\multirow{2}{*}{} & \multicolumn{2}{c|}{HasNext} & 
-% \multicolumn{2}{c|}{UnsafeIterator} \\ \cline{2-5}
- {} & Original & HasNext & UnsafeIterator\\
- \hline
-avrora            & 0.1G      & 0.4G(300\%)       & 0.7G(600\%)           \\ 
-\hline
-bloat             & 0.5G      & 1.1G(120\%)    & 1.3G(160\%)              \\ 
-\hline
-pmd               & 0.5G      & 0.6G(20\%)     & 1.0G(100\%)             \\ 
-\hline
-\end{tabular}
-\caption{Memory consumption for different programs and properties with and 
-without monitoring. The figures in the parentheses are the percentage 
-overheads.}
-\end{table}
-\label{table:consumedmemory}
 
 \ignore{
 In addition to the overall high overheads, for the properties associated with 
@@ -363,6 +364,5 @@ property violations.
 \end{itemize}
 Runtime Monitoring is complete but fundamentally unsound since it cannot see 
 anything beyond the current execution. In our approach, we sacrifice on the 
-soundness to achieve memory efficiency and determinism in terms of time.	
-}											
-									
+soundness to achieve memory efficiency and determinism in terms of time.
+}
