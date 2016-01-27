@@ -8,6 +8,127 @@
   \label{fig:unsafeiteratorfsa}
 \end{figure}
 
+%% UnsafeIterator is NOT a JAVA property!
+
+\subsection{Finite State Properties}
+\label{sec:motivation:fsp}
+
+Figure~\ref{fig:unsafeiteratorfsa} depicts a finite state automaton (FSA), 
+which models iteration over a \code{Collection}, and codifies that a 
+\code{Collection} must never be updated while it is being iterated over. The 
+symbols \textit{create}, \textit{update}, and \textit{next} correspond to 
+creating an \code{Iterator} from a \code{Collection}, modifying the 
+\code{Collection}, and iterating over the said \code{Collection}, respectively. 
+As shown in the figure, the symbol \textit{next} (observed following an 
+\textit{update}) indicates iteration after a \code{Collection} update, and 
+pushes the FSA to the \textit{error} state. Similarly, 
+Figure~\ref{fig:hasnextfsa} encodes \code{Iterator} property \code{HasNext}, 
+which states that \code{HasNext} must be invoked every time prior to invoking 
+\textit{next} to ensure that the object exists before it is operated upon.
+
+\subsection{Monitoring Systems}
+\label{sec:motivation:monitor}
+
+\code{Collection}s and \code{Iterator}s are commonly used objects, and also 
+frequent sources of errors \cite{}. Thus, common monitoring systems, like 
+\textsc{JavaMOP} typically instantiate a \textit{monitor} corresponding to every 
+pair of \code{Collection} and \code{Iterator}, and use it to track the 
+specified finite state properties upon occurrence of every event. For example, 
+the monitoring system may create a new monitor for the \textit{creation} event, 
+which corresponds to an invocation to the \code{Iterator()} method on the 
+\code{Collection} interface, and returns an instance of the \code{Iterator}.
+This newly created monitor is associated with both the \code{Collection} and 
+the \code{Iterator} objects.
+
+%% why is it a challenge
+\myparagraph{Challenges} Efficient monitoring of finite state properties is 
+thus usually a challenge due to:
+
+\begin{challenges}
+ \item \textbf{High monitor count}: Typically, in practice, a \code{Collection} 
+object may get iterated over several times before getting garbage collected. 
+Coupled with the fact that both \code{Collection}s and \code{Iterator}s are 
+frequently used objects in most programs, the number of monitors grows 
+exponentially. Table~\ref{table:numofmonitors} lists the huge number of 
+monitors observed when monitoring three commonly used \textsf{DaCapo} benchmarks 
+for \code{HasNext} and \code{UnsafeIterator} properties using with JavaMOP 
+v$2.3$. The huge number of monitors even for a relatively small number of 
+monitored \code{Collection} and \code{Iterator} objects puts a significant 
+burden on the system and the garbage collector. Furthermore, if the monitor 
+objects are live, the garbage collector cannot even reclaim them.
+ 
+ \item \textbf{High memory usage}: Table~\ref{table:consumedmemory} lists the 
+memory consumption of the benchmarks with and without monitoring using 
+\textsc{JavaMOP} v$2.3$. We observe that the large number of monitors results 
+significantly large memory consumption, in contrast to the benchmarks' normal 
+memory requirements, \ie\ without monitoring. Furthermore, in practice, 
+programmers like to monitor programs for \textit{all} interesting properties 
+collectively, and not individually. This collective monitoring of properties 
+becomes extremely difficult, and often infeasible. Prior 
+work~\cite{}\note{Purandare \etal} presents a technique to compact multiple 
+monitors and track programs for several properties simultaneously. However, the 
+resource footprint can still be significant and prohibitively high for 
+resource-constrained systems, because compaction reaches its limit quickly when 
+involving a finite state automata (FSA) product, which may itself grow 
+exponentially.
+
+ \item \textbf{High event tracking overhead}: In addition to the high overall 
+resource consumption associated with monitors, the cost of handling individual 
+events for tracking properties associated with multiple objects, such as 
+\code{UnsafeIterator}, could potentially be prohibitive. This high cost is 
+incurred since, theoretically, an unbounded number of monitors may get 
+associated with the events (depending on the program and property interactions). 
+As a result, the cost of tracking even a single event can become unpredictably 
+large.
+% 
+In fact, we observed that over $1500$ monitors were associated with a single 
+\code{Collection} object when monitoring for \code{UnsafeIterator} property 
+for the \text{bloat} \textsf{DaCapo} benchmark. Since each of these monitors 
+needs to be tracked when an event is handled by the corresponding receiver, 
+monitoring all events, thus, becomes non-deterministic in terms of time. 
+Furthermore, not being able to provide guaranteed bounds on the monitored 
+execution significantly restricts the usage to non real-time systems or systems 
+where performance guarantees are not essential. In any case, however, most 
+systems suffer degraded performance with uncontrolled resource usage and 
+execution overhead for monitoring systems.
+ 
+ \item \textbf{Redundant monitors}: For the same set of \textsf{DaCapo} 
+benchmarks and properties, we also observed that all $42$ errors reported while 
+monitoring \textit{bloat} for property \texttt{HasNext}, and $333$ errors 
+reported by \textit{pmd} can be partitioned into two distinct classes of errors 
+that shared similar execution context, \ie\ the stack trace.
+% 
+% % we need not explain the optimization here.
+% For this work, we associated an execution context with a method calling 
+sequence
+% %a call stack and the program counter,
+% and the data was collected  by considering limited execution context for 
+% efficiency reasons. 
+% 
+These observations indicate that several monitors catch the same redundant 
+errors, which clearly is not intelligent reporting to the developer. Ideally, 
+the monitors must report only distinct errors, \ie\ only $3$ distinct errors 
+for \textit{bloat}, and $2$ for \textit{pmd}. Hence, we believe that 
+sampling-based monitoring that leverage the program execution context would be 
+significantly more effective and consume much less resources.
+\end{challenges}
+
+%We also made some fine-grain observations regarding the redundancy in the 
+%behavior of monitors.  For the same DaCapo benchmarks and properties, 
+%Table~\ref{table:joinpoints} presents the number of \textit{observable} 
+%statements that generate monitoring events. Even though monitors are generated 
+%in millions, observable statements are only a few. This indicates that there 
+% is 
+%a reason to believe that the \textit{programming contexts} under which these 
+%statements are invoked are limited. 
+
+In this work, we present a runtime verification approach that exploits 
+redundancy in monitor behavior, and retains only those that show distinct 
+behavior. As a result, put approach significantly improves upon memory 
+efficiency and execution time determinism. 
+% The approach has been described in detail in Section~\ref{sec:approach}.
+
+\ignore{
 Figure~\ref{fig:unsafeiteratorfsa} depicts a finite state automaton (FSA) that 
 models a property \texttt{UnsafeIterator} which is defined by the API of Java 
 standard library and is related to a \texttt{Collection} as well as an 
@@ -37,7 +158,8 @@ Similar issue arises with another iterator property \texttt{HasNext} depicted in
 Figure~\ref{fig:hasnextfsa}. It specifies that a call to the \textit{hasNext} 
 method must be given before calling \textit{next} method to ensure that an object 
 exists before it is used. Collections and iterators are not only commonly used 
-objects, but often the sources of error \cite{}. 
+objects, but often the sources of error \cite{}.
+}
 
 \begin{figure}[t]
 \centering
@@ -46,12 +168,15 @@ objects, but often the sources of error \cite{}.
   \label{fig:hasnextfsa}
 \end{figure}
 
+\ignore{
 Monitoring finite state properties efficiently has been a challenge due to the 
 large number of monitors that may get created and also due to the large number 
 of monitors that may get associated with some events. 
 Table~\ref{table:numofmonitors} shows the number of monitors we observed while 
-monitoring some DaCapo benchmarks using JavaMOP 2.3 for \texttt{HasNext} and 
+monitoring some \textsf{DaCapo} benchmarks using JavaMOP 2.3 for 
+\texttt{HasNext} and 
 \texttt{UnsafeIterator} properties.
+}
 
 \ignore{
 \begin{itemize}
@@ -82,6 +207,7 @@ and properties}
 \end{table}
 \label{table:numofmonitors}
 
+\ignore{
 Table~\ref{table:consumedmemory} presents the memory consumption of the 
 benchmarks with and without monitoring when JavaMOP 2.3 was used for monitoring. 
 It shows that the large number of monitors results in the consumption of 
@@ -98,6 +224,7 @@ resource-constrained systems. This is owing to the fact that the compaction
 reaches its limit quickly since 
 it involves taking a finite state automata (FSA) product which may grow 
 exponentially.
+}
 
 \begin{table}[t]
 \centering
@@ -120,6 +247,7 @@ overheads.}
 \end{table}
 \label{table:consumedmemory}
 
+\ignore{
 In addition to the overall high overheads, for the properties associated with 
 multiple objects, such as \texttt{UnsafeIterator} the cost of handling 
 individual events can also be very high. This  happens since theoretically unbounded number of 
@@ -145,7 +273,7 @@ the memory overheads and execution times of monitoring cannot be controlled.
 %a reason to believe that the \textit{programming contexts} under which these 
 %statements are invoked are limited. 
 
-For the same DaCapo benchmarks and properties, we made some fine-grain 
+For the same \textsf{DaCapo} benchmarks and properties, we made some fine-grain 
 observations regarding the redundancy in the behavior of monitors. We observed 
 that the 42 errors reported while monitoring \textit{bloat}  for property 
 \texttt{HasNext} could be partitioned into two classes of errors such that all 
@@ -166,21 +294,7 @@ the redundancy in the monitor behavior and retain only the ones that show
 distinct behavior. As a result, it improves on memory efficiency as well as execution time 
 determinism. The approach has been described in detail in 
 Section~\ref{sec:approach}.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 \ignore{
 Some very particular typestate properties are typically desired to be satisfied 
