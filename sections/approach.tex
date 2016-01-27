@@ -6,55 +6,69 @@ state monitoring. At the same time it also tries to make monitoring more
 time-deterministic without compromising much with the error reporting.
 The approach is based on the following mechanisms.
 
-\paragraph{Context-based sampling} We use context-based sampling to control the 
+\subsection{Context-based sampling}
+
+We use context-based sampling to control the 
 number of monitors. The motivation for this approach comes from our observation 
-that the monitors created at the same creation site and under similar context 
-tend to go through a similar life cycle. In other words, these monitors are more 
+that the monitors created at the same creation site and under similar program
+execution context tend to go through a similar life cycle. In other words, these monitors are more 
 likely to show a redundant behavior. Hence, the heuristic applied for this 
-sampling is based on the program execution context. It works by i) identifying 
+sampling is based on the program execution context. Our approach works by i) identifying 
 the monitor creation sites which are specified as creation events in the 
-monitoring specification, and then by ii) obtaining the call-stack to understand 
+monitoring specification, and then by ii) obtaining the method calling sequence to identify 
 the execution context, and finally by iii) making a decision about the 
 allocation of the monitor based on the number of times this context was seen in 
 the past. More often the monitoring system has seen the context, less likely it 
-is to allocate a monitor. The programming context that we consider is limited to 
-the the top three methods in the call stack along with the program counter.
+is to allocate a monitor. The program execution context that we consider in this work is
+the method calling sequence of limited length. We describe the implementation details
+in Section~\ref{sec:evaluation}.
 
-\paragraph{Fixed-size global pool of monitors} We limit the total number of 
+\subsection{Fixed-size global pool of monitors}
+
+We limit the total number of 
 monitors that our monitoring approach would generate by creating a small 
 monitor-pool of fixed size prior to the program execution and then maintaining 
-it during the execution. In short our approach reuse of monitors. The monitors 
+it during the execution. In short our approach reuse monitors. The monitors 
 after their usage can be returned back to the system. Moreover, if the pool runs 
-out of monitors and the system needs a new monitor, a monitor currently being 
+out of monitors and the system needs a new monitor, one of the monitors currently being 
 used is forcefully reclaimed and made available for the reallocation. The 
 heuristic that we use to reclaim a monitor is based on the observation that the 
 program events are often temporally separated. In other words, in an execution 
-trace, the events related to a same receiver object are likely to be found 
-together. We exploit this observation by making the last used potentially active 
-monitor available for reallocation. This also means that if the object that is 
-removed from tracking observes another event it will not be tracked, and in case 
-the 
-event had otherwise generated an error, the approach would now miss it. 
+trace, the events related to a same receiver object are likely to be generated 
+in close time intervals. We exploit this observation by making the last used potentially active 
+monitor available for reallocation. This also means that the objects associated with the monitor
+are not tracked further, and if any of them observe another event that might have otherwise
+lead the monitor to the error state, the approach will now miss the error. 
 Potentially missing a few errors is a cost of our optimized monitoring approach, 
-however, by using smart heuristics we can minimize \textit{false negatives}.
+however, by using smart heuristics presented in this Section the approach tries to
+minimize \textit{false negatives}. As described in Section~\ref{sec:definition}, our
+goal is to detect all nonredundant errors and not all errors.
 
-\paragraph{Fixed-size local pool of monitors for individual objects} For 
-properties related to multiple objects such as \texttt{UnsafeIterator} property, 
-an object may can get associated with several monitors in its life-time. In this 
-case, an event that performs an operation on the object results in the state of 
-every associated monitor getting updated. Hence, handling such events may become 
-\textit{nondeterministic} as far as timing requirements are concerned. We 
-consider a monitoring behaviour to be deterministic if we can calculate the 
-worst-case time taken to handle every monitoring event. Binding the number of 
+\subsection{Fixed-size local pool of monitors for individual objects}
+
+In the case of properties related to multiple objects, 
+an object can get associated with numerous monitors in its life-time. For example,
+in the case of \texttt{UnsafeIterator} property a collection object may get associated
+with numerous iterator objects in its life-time. In other words, every pair of a collection and its related
+iterator has an associated monitor. Hence, a collection may have several monitors associated with it
+and they are stored in a map corresponding to the collection object as a key.
+Therefore, an event related to the collection object results in the states of 
+several monitors getting updated. Hence, handling such events may become 
+\textit{nondeterministic} in terms of their execution times even when the events are related
+to a same symbol, or to a same set of objects but at different times.
+
+For this work, we consider a monitoring behaviour to be time-deterministic if we can compute the 
+worst-case time taken to execute every monitoring event. Binding the number of 
 monitors associated with an object allows us to limit the worst case execution 
 time for any monitoring operation associated with that object. Our approach 
 implements this constraint by allocating a fixed-size local pool of monitors to 
-individual objects.
+individual objects. We reallocate an existing monitor in case this buffer is full and we need a new
+monitor for the same set of objects.
 
-Section~\ref{subsec:outline} gives the outline of our approach, and 
-Section~\label{subsec:algorithm} presents the algorithm.
+%Section~\ref{subsec:outline} gives the outline of our approach, and
+%Section~\ref{subsec:algo} presents the algorithm.
 
-\subsection{Monitoring Approach}
+\subsection{Outline of the approach}
 \label{subsec:outline}
 
 \begin{figure}[t]
@@ -68,43 +82,44 @@ System]{Schematic of Memory-efficient and Deterministic Monitoring System.}
 Figure~\ref{fig:schematic} shows the main elements of our approach. The program 
 under execution generates events parameterized by objects which are accepted by 
 our monitoring system, and each one of them is handed over to the monitor 
-allocation component. This component based on the event type and some heuristics 
+allocation component. This component based on the event type and the heuristics 
+described in the previous sections
 makes a decision about whether to allocate a monitor or not. For convenience, we 
 specify the program points that generate creation events explicitly, so that the 
-approach can leverage this information to make the decision. If the event is of 
-creation type, the monitoring system checks the execution context and its 
-tracking history to see is the context was already sen in the past, and if yes, 
-then with that frequency. The system probabilistically skips the monitor 
-allocation phase for frequently seen contexts. The contexts are maintained as 
-trees in which a new context adding a new branch or branches and leaf node. 
-Every leaf node uniquely defines a context and it keeps information about the 
-number 
-of times the context was seen. The system can be confi
+approach can leverage this information to make the decision about allocation. 
+If the event is of creation type, the monitoring system checks the execution context and its 
+tracking history to see if the context was already seen in the past, and if yes, 
+then with what frequency. The system probabilistically skips the monitor 
+allocation phase for frequently seen contexts. 
+%The contexts are maintained as trees in which a new context adding a new branch or branches and leaf node. 
+%Every leaf node uniquely defines a context and it keeps information about the 
+%number of times the context was seen.
+The seen contexts are stored as bitmaps to enable efficient
+comparisons.
 
 In case the system chooses to allocate a monitor, it consults the global and the 
-local monitor pools to see if a fresh monitor can be allocated or the the local  
-If allocation is required it consults the global pool as well as the local pool 
-to see if a fresh monitor is available or an old one needs to be reused. This 
-mechanism currently is implemented as a circular array which naturally preserves 
-the chronological ordering. In case an old one is chosen for monitoring, that 
+local monitor pools to see if a fresh monitor can be allocated. I not
+an old monitor is reused. This mechanism is implemented as a circular array that preserves 
+the chronological ordering. In case an old monitor is chosen for tracking, that 
 monitor is first removed from the existing local pools of the corresponding 
-objects, and then reallocated to the new object under consideration.
+objects, and then reallocated to the new objects under consideration.
 
 The tracking of monitors for the non-creation events is similar to the 
-conventional model. The only difference is that if no monitor exists in the maps 
+conventional monitoring system. The only difference is that if no monitor exists in the maps 
 corresponding to objects associated with an event, then monitoring is completely 
-skipped for that event. It is assumed that the monitors corresponding to the 
-associated objects were never created by the system. Skipping monitoring is a 
-direct saving in terms of execution time.
+skipped for that event. This case implies that the monitors corresponding to the 
+associated objects were never created by the system, since we have distinct creation
+events for properties to be monitored. Skipping monitoring events is a 
+direct saving in terms of execution time overhead.
 
 
 
 
 \begin{algorithm}[t]
                       % enter the algorithm environment
-\caption[Algorithm]{Monitoring Algorithm. $\phi$ = 
-($Q$,$\Sigma$,$\delta$,$q_{0}$,$F$), $e=(l,b)$ where e is an event and $l \in L$ 
-be a set of associated objects and $b \in \Sigma$}          % give the algorithm 
+\caption[Algorithm]{Context-Aware Monitoring Algorithm. $\phi$ = 
+($Q$,$\Sigma$,$\delta$,$q_{0}$,$F$), $\eta=(\beta, \sigma)$ where $\eta$ is an event and $\alpha \in 2^O$ 
+be a set of associated objects and $\sigma \in \Sigma$}          % give the algorithm 
 % a caption
 \label{alg1}                           % and a label for \ref{} commands later 
 % in the document
@@ -117,8 +132,8 @@ function generating a threshold value
    \STATE \textbf{let} \textit{ObjsMons} : $O \to \textit{MS}$ be a function
    \STATE \textbf{let} \textit{MonObjs} : $M \to L$ be a function
    \STATE \textbf{let} \textit{ObjsSym} be a binary relation over L and $\Sigma$
-   \STATE \textbf{let} $\psi \in \Psi$ be a finite sequence of method structures
-   \STATE \textbf{let} $\eta$ be the data structure holding the program 
+   \STATE \textbf{let} $\pi \in \Pi$ be a finite sequence of method structures
+   \STATE \textbf{let} $\zeta$ be the data structure holding the program 
 execution contexts
    %\STATE \textbf{let} \textit{getFreq} : A function that takes $\psi \in \Psi$ 
 % and $\eta$  and returns \textit{ct} which is the number of times the context was 
@@ -126,15 +141,15 @@ execution contexts
    %\STATE \textbf{let} \textit{incFreq} : A routine that takes $\psi \in \Psi$ 
 % and $\eta$  and $n \in \mathcal{N}$ and sets $\psi.count$ 
    
-    \IF{$b \in \Sigma_{c}$}
-        \STATE $\psi$  $\leftarrow$ getExecutionContextInfo()
-        \IF{isMatch($\psi$, $\eta$) = TRUE}
-           \STATE $\theta$ $\leftarrow$ threshold($\psi$, $\eta$)
+    \IF{$\sigma \in \Sigma_{c}$}
+        \STATE $\pi$  $\leftarrow$ getExecutionContextInfo()
+        \IF{isMatch($\pi$, $\zeta$) = TRUE}
+           \STATE $k$ $\leftarrow$ threshold($\pi$, $\zeta$)
         \ELSE
-        	   \STATE $\theta \leftarrow 1$
+        	   \STATE $k \leftarrow 1$
         \ENDIF
-        \STATE updateExecutionContextInfo($\psi$, $\eta$)
-        \IF{Rand() $\leq \theta$}  
+        \STATE updateExecutionContext($\pi$, $\zeta$)
+        \IF{Rand() $\leq k$}  
             	\STATE $m$ $\leftarrow$ $A$.nextMonitor($o$)
         		\FOR{$l' \subseteq$ MonObjs($m$)} 
             	%\IF{$\exists \sigma \in \Sigma : (l', \sigma) \in ObjsSym $}
@@ -144,21 +159,21 @@ execution contexts
         		\FOR{$l' \subseteq l $} 
             		%\IF{$\exists \sigma \in \Sigma : (l', \sigma) \in 
 % ObjsSym $}
-			\IF{ObjsMons($l'$).size() = MAX\_MON}
-				 \STATE $m' \leftarrow$ ObjsMons($l'$).first();
-			  	\FOR{$l'' \subseteq$ MonObjs($m'$)} 
-					\STATE ObjsMons($l''$) $\leftarrow$  
-ObjsMons($l''$) / \{$m'$\}
+			\IF{ObjsMons($\alpha'$).size() = MAX\_MON}
+				 \STATE $m' \leftarrow$ ObjsMons($\alpha'$).first();
+			  	\FOR{$\alpha'' \subseteq$ MonObjs($m'$)} 
+					\STATE ObjsMons($\alpha''$) $\leftarrow$  
+ObjsMons($\alpha''$) / \{$m'$\}
         				\ENDFOR
 			\ENDIF
-                		 \STATE ObjsMons($l'$) $\leftarrow$  
+                		 \STATE ObjsMons($\alpha'$) $\leftarrow$  
 ObjsMons($l'$) $\cup$ \{$m$\}
             		%\ENDIF   
         		\ENDFOR
         \ENDIF
  \ENDIF
- \FOR{$m$ $\in$ ObjsMons($l$)}
-     \STATE $m$.cur $\leftarrow$ $\delta$($m$.cur,$b$)
+ \FOR{$m$ $\in$ ObjsMons($\beta$)}
+     \STATE $m$.cur $\leftarrow$ $\delta$($m$.cur,$\sigma$)
      \IF{$m$.cur = err}
         \STATE report$\hspace{5pt}\textbf{error}$
      \ENDIF
