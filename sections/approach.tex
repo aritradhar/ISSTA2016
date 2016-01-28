@@ -113,8 +113,8 @@ conventional monitoring system. The only difference is that if no monitor exists
 corresponding to objects associated with the incurred event, then monitoring is completely 
 skipped for that event. This case can only happen when the monitors corresponding to the 
 associated objects were intentionally not created by the system. Skipping monitoring events is a 
-direct saving in terms of execution time overhead.
-
+direct saving in terms of execution time overhead. In case any of the monitors goes to the error state,
+an error report is generated.
 
 
 
@@ -122,28 +122,18 @@ direct saving in terms of execution time overhead.
                       % enter the algorithm environment
 \caption[Algorithm]{Context-Aware Monitoring. Input: $\phi$ = 
 ($Q$,$\Sigma$,$\delta$,$q_{0}$,$F$), $\eta=(\beta, \sigma)$ where $\eta$ is an event and $\beta \in 2^O$ 
-be a set of associated objects and $\sigma \in \Sigma$}          % give the algorithm 
+be the set of associated objects and $\sigma \in \Sigma$}          % give the algorithm 
 % a caption
 \label{alg1}                           % and a label for \ref{} commands later 
 % in the document
 \begin{algorithmic}[1]                  
-   %\STATE \textbf{let} \textit{O} be the set objects that receive events
    \STATE \textbf{let} $\Sigma_{c} \in \Sigma$ be the set of creation symbols
-   %\STATE \textbf{let} \textit{threshold} : $\mathcal{N} \to \mathcal{R}$ be a 
-%function generating a threshold value
    \STATE \textbf{let} \textit{A} be the global circular array of monitors
-   %\STATE \textbf{let} \textit{ObjsMons} : $2^O \nrightarrow 2^M$ be a function
-    \STATE \textbf{let} $\psi$ : $2^O \nrightarrow 2^M$ be a function
-   \STATE \textbf{let} $\tau$ : $M \nrightarrow 2^O$ be a function
-   %\STATE \textbf{let} \textit{ObjsSym} be a binary relation over L and $\Sigma$
+    \STATE \textbf{let} $\psi$ : $2^O \nrightarrow 2^M$ be a mapping that returns the monitors associated with a given set of objects.
+   \STATE \textbf{let} $\tau$ : $M \nrightarrow 2^O$ be a mapping that returns the objects associated with a monitor
    \STATE \textbf{let} $\pi \in \Pi$ be a finite sequence of method structures
-   \STATE \textbf{let} $\zeta$ be the data structure holding program 
-execution contexts
-   %\STATE \textbf{let} \textit{getFreq} : A function that takes $\psi \in \Psi$ 
-% and $\eta$  and returns \textit{ct} which is the number of times the context was 
-% seen
-   %\STATE \textbf{let} \textit{incFreq} : A routine that takes $\psi \in \Psi$ 
-% and $\eta$  and $n \in \mathcal{N}$ and sets $\psi.count$ 
+   \STATE \textbf{let} $\zeta$ be the data structure holding program execution contexts
+  
    
     \IF{$\sigma \in \Sigma_{c}$}
         \STATE $\pi$  $\leftarrow$ getExecutionContextInfo()
@@ -156,14 +146,10 @@ execution contexts
         \IF{Random() $\leq k$}  
             	\STATE $m$ $\leftarrow$ $A$.nextMonitor()
         		\FORALL {$\alpha' \subseteq$ $\tau$($m$)} 
-            	%\IF{$\exists \sigma \in \Sigma : (l', \sigma) \in ObjsSym $}
 		\STATE $\psi$($\alpha'$) $\leftarrow  \psi(\alpha') / \{m\}$
-            	%\ENDIF   
         		\ENDFOR
-        		\FORALL {$\alpha' \subseteq \alpha $} 
-            		%\IF{$\exists \sigma \in \Sigma : (l', \sigma) \in 
-% ObjsSym $}
-			\IF{$\psi$($\alpha'$).size() = MAX\_MON}
+        		\FORALL {$\alpha' \subseteq \beta $} 
+			\IF{$\psi$($\alpha'$).size() = \textit{max\_mon}}
 				 \STATE $m' \leftarrow$ $\psi$($\alpha'$).first();
 			  	\FORALL{$\alpha'' \subseteq$ $\tau$($m'$)} 
 					\STATE $\psi$($\alpha''$) $\leftarrow$  
@@ -172,7 +158,6 @@ $\psi$($\alpha''$) / \{$m'$\}
 			\ENDIF
                 		 \STATE $\psi$($\alpha'$) $\leftarrow$  
 $\psi$($\alpha'$) $\cup$ \{$m$\}
-            		%\ENDIF   
         		\ENDFOR
         \ENDIF
  \ENDIF
@@ -225,6 +210,57 @@ monitoring, except that no monitor will be tracked if the system does not see
 any monitor allocated.
 
 
+\subsection{Memory-Efficiency }
+\label{subsec:memory efficiency}
+
+The algorithm preallocates monitors from a pool of constant size, and then if 
+required, the monitors are reused. In our study we used the pool of 1k monitors
+for the property and program combinations that typically generate more than
+million monitors. In fact, as the study indicates, the system ended up consuming
+even less than 1k monitors due to limited program execution contexts that were
+observed during runtime. This shows that an approach based on the execution
+contexts may result in a dramatic saving in the memory requirements of a
+software application.
+
+\subsection{Time-Determinism}
+\label{subsec:timedeterminism}
+
+It is easy to see that the algorithm has fairly tight worst-case execution time bounds
+for all of its steps making it time-deterministic. This can be explained
+by analysing the bounds on the steps involved in handling a monitoring event.
+We divide the event-handling analysis into following two categories.
+
+\paragraph{Handling of creation events} A creation event may result in a monitor
+allocation depending on the program execution context under which it was generated.
+Accessing the context on line 8 is a constant time operation. Method \code{isPresent} on
+line 9 traverses entire depth of the context tree in the worst case, which makes it
+constant time since the tree has a limited height. Updating the execution context on line 14
+cannot take longer than the time required to traverse the depth of the tree for the same reason.
+The loop on lines 17--19 iterates $2^n$ times and hence takes $O(2^n)$ time 
+where $n$ is $\mid\tau(m)\mid$ and $\tau(m)$ which is the number of associated objects 
+and is normally $\le$ 3. Hence, this operation takes $\Theta(1)$ time. By the same arguments
+loops on lines 23--25 and 20--28 iterate $2^{\mid\tau(m)\mid}$ and $2^\beta$ times and take $\Theta(1)$
+time since these numbers are small and often less than 4 times. Hence, the worst case running time
+of the outer loop on lines 20--28 is $\Theta(1)$. Therefore the time taken by a creation event in the
+worst case is constant.
+
+\paragraph{Handling of other events}
+Since the size of the local monitor pools is limited to a small number, the loop on lines 31--36
+executes at most $k$ times where $k$ the size of the local monitor pool. For properties, that are
+associated with only one object this number is 1. Hence, the handling of other events takes a
+constant time irrespective of the objects associated with the property.
+
+Hence, we see that the algorithm has worst case execution time bound of
+$\Theta$(1). For a program execution that  generates $n$ events, the time taken to handle 
+these events by our approach in the worst case is $O(n)$. In comparison, in the worst case,
+the unoptimized algorithm may create $O(n)$ monitors, assign all of them to a set of objects,
+ and then receive events of similar kind on the same set of objects
+ requiring all of the created monitors to be tracked for every event. therefore, the complexity of the
+ unoptimized algorithm to handle $n$ events would be $O(n^2)$. Even though we expect this worst case to arise 
+ in the practice rarely, we expect our algorithm to work faster than the unoptimized algorithm in the practice.
+
+
+\ignore{
 \subsection{Memory-Efficiency and Time-Determinism}
 \label{subsec:efficiencyanddeterminism}
 
@@ -257,30 +293,36 @@ the unoptimized algorithm may create $O(n)$ monitors, assign all of them to a se
  requiring all of the created monitors to be tracked together.  The complexity of the
  unoptimized algorithm then would be quadratic. Even though we expect the worst case to arise 
  in the practice rarely, we expect our algorithm to work faster than the unoptimized one in the practice.
- 
+ }
 
 \subsection{Soundness, Memory, and Determinism: Tradeoffs}
 \label{subsec:tradeoff}
 
-There is unfortunately a tradeoff between soundness and memory and we need to 
+There is unfortunately a tradeoff between soundness of the system and the
+number allocated monitors, which in turn, reflects the memory allocated for monitoring,  and we need to 
 choose one at the cost of other. However, runtime monitoring is inherently 
-unsound \cite{}. It can only report what it has seen. This means program errors 
+unsound \cite{}. It can report only based on what it has observed. This means program errors 
 may not be reported if the paths that encounter them are not executed. We 
 stretch this limitation a little bit further to achieve substantial benefits in 
 terms of memory savings.
+
 Our technique should enable developers to use runtime 
 monitoring in the resource-constrained system settings where the previous 
-techniques for finite-state monitoring might have been seen infeasible.
+techniques for finite-state monitoring might not have been feasible.
 
 Similar tradeoff exists between soundness and determinism in terms of time, but 
 we believe that binding worst-case execution times has its own rewards 
-especially in the domain of real-time systems. Hence, our approach tries to use 
+especially in the domain of real-time systems or systems with stringent time overhead
+expectations. Hence, our approach tries to use 
 smart heuristics based on our observations and experience so as to reduce false 
 negatives and improve the soundness of the system. As indicated by the study 
-presented in Section~\ref{sec:study}, our approach can save considerable amount 
-memory and can also make monitoring time-deterministic. Moreover, it does not 
-compromise with its \textit{completeness} by ensuring that no false positives 
-are produced.
+presented in Section~\ref{sec:evaluation}, our approach can save considerable amount 
+memory and can also make monitoring time-deterministic.
+
+Since, the monitors that produce errors are tracked from end to end in a way similar to the
+conventional unoptimized approach, the optimized approach does not 
+compromise with its \textit{completeness} , and ensures that no false positives 
+are ever produced.
 
 
 \ignore{
