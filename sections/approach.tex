@@ -42,7 +42,7 @@ lead the monitor to the error state, the approach will now miss the error.
 Potentially missing a few errors is a cost of our optimized monitoring approach, 
 however, by using smart heuristics presented in this Section the approach tries to
 minimize \textit{false negatives}. As described in Section~\ref{sec:definition}, our
-goal is to detect all nonredundant errors and not all errors.
+goal is to detect all non-redundant errors, and not all errors.
 
 \subsection{Fixed-size local pool of monitors for individual objects}
 
@@ -57,7 +57,8 @@ several monitors getting updated. Hence, handling such events may become
 \textit{nondeterministic} in terms of their execution times even when the events are related
 to a same symbol, or to a same set of objects but at different times.
 
-For this work, we consider a monitoring behaviour to be time-deterministic if we can compute the 
+For this work, we consider a monitoring behavior to be time-deterministic if we 
+can compute the 
 worst-case time taken to execute every monitoring event. Binding the number of 
 monitors associated with an object allows us to limit the worst case execution 
 time for any monitoring operation associated with that object. Our approach 
@@ -73,7 +74,7 @@ monitor for the same set of objects.
 
 \begin{figure}[t]
 \centering
-  \includegraphics[scale=0.33, trim= 0 0 0 0]{./images/schematic.pdf}
+  \includegraphics[width=\linewidth]{./images/schematic.pdf}
   \caption[Schematic of Memory-efficient and Deterministic Monitoring 
 System]{Schematic of Memory-efficient and Deterministic Monitoring System.}
   \label{fig:schematic}
@@ -277,17 +278,9 @@ especially in the domain of real-time systems. Hence, our approach tries to use
 smart heuristics based on our observations and experience so as to reduce false 
 negatives and improve the soundness of the system. As indicated by the study 
 presented in Section~\ref{sec:study}, our approach can save considerable amount 
-memory and can also make monitoring time-determinitic. Moreover, it does not 
+memory and can also make monitoring time-deterministic. Moreover, it does not 
 compromise with its \textit{completeness} by ensuring that no false positives 
 are produced.
-
-
-
-
-
-
-
-
 
 
 \ignore{
