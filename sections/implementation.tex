@@ -30,7 +30,10 @@ only  for the first time the system encounters the object. Property
 \texttt{UnsafeIterator} already had a well-defined creation event.
 
 
-\myparagraph{DaCapo instrumentation} We have used \texttt{Soot}~\cite{soot} to
+\subsection{DaCapo instrumentation} 
+\label{subsec:dacapoInstr}
+
+We have used \texttt{Soot}~\cite{soot} to
 instrument Dacapo benchmarks. \code{getStackTrace()} method can be used to
 fetch current stack trace but it introduces overhead. To mitigate this, we have
 instrumented each of the methods of DaCapo benchmark with a static
@@ -43,7 +46,7 @@ described in Code~\ref{snippet:methodTrace}.
 \lstset{escapeinside={/*@}{@*/}, language=Java , caption=\bf Method trace
 implementation., label=snippet:methodTrace} \begin{figure}[t]
 \begin{lstlisting}
-long trace;
+long trace; //method stack trace	
 int counter = 0;
 void methodTrace(int methodID) {
  switch (counter) {
@@ -59,5 +62,10 @@ void methodTrace(int methodID) {
 \end{lstlisting}
 \end{figure}
 
+\subsection{Aspect Generation and Optimizations}
+\label{subsec:aspectGen}
+
+\subsection{Context Matching}
+\label{subsec:contextMatch}
 The time and memory overheads have been reported after using -converge option 
 provide by the DaCapo benchmark suite.
