@@ -82,34 +82,36 @@ System]{Schematic of Memory-efficient and Deterministic Monitoring System.}
 Figure~\ref{fig:schematic} shows the main elements of our approach. The program 
 under execution generates events parameterized by objects which are accepted by 
 our monitoring system, and each one of them is handed over to the monitor 
-allocation component. This component based on the event type and the heuristics 
-described in the previous sections
-makes a decision about whether to allocate a monitor or not. For convenience, we 
+allocation module. This module contains information about the symbol types, the current execution context, 
+the history of the observed execution contexts, and the global monitor pool.
+Based on the type of the symbol, which is part of the event, and the heuristics 
+described in the previous sections, the allocation module makes a decision about whether to allocate a monitor or not.
+For convenience, if not already available, we 
 specify the program points that generate creation events explicitly, so that the 
-approach can leverage this information to make the decision about allocation. 
-If the event is of creation type, the monitoring system checks the execution context and its 
+approach can leverage this information to make the decision about allocation and tracking. 
+If the event is of creation type, the allocation module checks the execution context and its 
 tracking history to see if the context was already seen in the past, and if yes, 
 then with what frequency. The system probabilistically skips the monitor 
 allocation phase for frequently seen contexts. 
-%The contexts are maintained as trees in which a new context adding a new branch or branches and leaf node. 
-%Every leaf node uniquely defines a context and it keeps information about the 
-%number of times the context was seen.
-The seen contexts are stored as bitmaps to enable efficient
-comparisons.
+The contexts are maintained as trees in which a new context adding a new branch or branches and leaf node. 
+Every leaf node uniquely defines a context and it keeps information about the 
+number of times the context was seen. Currently, the seen contexts are stored as bitmaps to enable efficient
+comparisons, and this mechanism can be further improved for efficiency.
 
-In case the system chooses to allocate a monitor, it consults the global and the 
-local monitor pools to see if a fresh monitor can be allocated. I not
-an old monitor is reused. This mechanism is implemented as a circular array that preserves 
-the chronological ordering. In case an old monitor is chosen for tracking, that 
-monitor is first removed from the existing local pools of the corresponding 
-objects, and then reallocated to the new objects under consideration.
+The global monitor pool is implemented as a circular array that preserves 
+the chronological ordering. In case the allocation module chooses to allocate a monitor,
+it picks the next available monitor for allocation. The monitor being allocated could be already in use.
+in which case that monitor is first removed from the existing local pools of the associated 
+objects, and then reallocated to the new objects under consideration. This allocation results in the monitor
+getting added to the local pools that belong to the associated objects. The local pools are also of fixed maximum size.
+In case, any of the concerned local pool is already full, the oldest monitor from the pool is removed and returned to the global pool
+to create room for the new monitor. 
 
 The tracking of monitors for the non-creation events is similar to the 
 conventional monitoring system. The only difference is that if no monitor exists in the maps 
-corresponding to objects associated with an event, then monitoring is completely 
-skipped for that event. This case implies that the monitors corresponding to the 
-associated objects were never created by the system, since we have distinct creation
-events for properties to be monitored. Skipping monitoring events is a 
+corresponding to objects associated with the incurred event, then monitoring is completely 
+skipped for that event. This case can only happen when the monitors corresponding to the 
+associated objects were intentionally not created by the system. Skipping monitoring events is a 
 direct saving in terms of execution time overhead.
 
 
