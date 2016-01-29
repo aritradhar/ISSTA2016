@@ -165,12 +165,14 @@ $\mathcal{N}(E)$  & $\mathcal{N}(A)$ &
 $\mathcal{N}(E)$  & $\mathcal{N}(A)$ 
 \\ \hline
  
- Original   & $44(3)$ & $1.9$M & $400(3)$ & $1.94$M & $0$ & $817$ & &  \\ \hline
- Optimized ($\mathcal{L}(A) = 1$K) & $3(3)$  & $10$K  & $322(3)$ & $10$K  & $0$
- & $101$ & &
+ Original   & $44(3)$ & $1.9$M & $400(3)$ & $1.94$M & $0$ & $817$ & $7.9$K$(9)$&
+ $898$K
+ \\
+ \hline Optimized ($\mathcal{L}(A) = 1$K) & $3(3)$  & $10$K  & $322(3)$ & $10$K  & $0$
+ & $101$ & $726(9)$ & $8.2$K
  \\
  \hline Optimized ($\mathcal{L}(A) = 30$K) & $3(3)$  & $110$K & $390(3)$ &
- $224$K & $0$ & $817$ & &
+ $224$K & $0$ & $817$ & $10.3$K $(9)$ & $119$K
  \\
  \hline \multicolumn{9}{|c|}{\bf\code{FailSafeIter}}\\\hline
   Original  & $0$     & $1.96$M&  $0$ & $1.94$M & $0$ & $817$ & &  \\ \hline
@@ -187,7 +189,8 @@ $\mathcal{N}(E)$  & $\mathcal{N}(A)$
 \end{tabular}
 \caption{Errors reported and monitors generated for different properties.
 $\mathcal{N}(E)$, $\mathcal{N}(A)$ and $\mathcal{L}(A)$ denote \#error reported,
-\#monitor allocation respectively and \#monitor limit respectively.}
+\#monitor allocation respectively and \#monitor limit respectively. \#unique
+contexts where the errors are captured in parenthesis}
 \end{table*}
 \label{table:errorreporting1}
 
