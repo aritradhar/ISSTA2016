@@ -152,32 +152,35 @@ findings.
 
 \begin{table*}[!ht]
 \centering
-\begin{tabular}{|p{3.7cm}|p{1.2cm}|p{1.5cm}||p{1.2cm}|p{1.5cm}||p{1.2cm}|p{1.5cm}||
-p{1.2cm}|p{1.5cm}|}
+\begin{tabular}{|c|c|c||c|c||c|c||c|c|}
 \hline
 
 \multicolumn{9}{|c|}{\bf\code{HasNext}}\\\hline
 \multirow{3}{*}{}               & \multicolumn{2}{c||}{bloat}             & 
 \multicolumn{2}{c||}{pmd}            & \multicolumn{2}{c||}{chart}      & 
 \multicolumn{2}{c|}{avrora} \\\cline{2-9} 
-                                       & \# Errors Reported  & \# Monitor 
-Allocations & \# Errors reported & \# Monitor Allocations& \# Errors Reported & 
-\# Monitor Allocations & \# Errors Reported & \# Monitor Allocations \\ \hline
+& $\mathcal{N}(E)$  & $\mathcal{N}(A)$ &
+$\mathcal{N}(E)$  & $\mathcal{N}(A)$ &
+$\mathcal{N}(E)$  & $\mathcal{N}(A)$ &
+$\mathcal{N}(E)$  & $\mathcal{N}(A)$ 
+\\ \hline
  
- Original & $44 (3)$ & $1.9$M & & & & & &  \\ \hline
- Optimized1 & $0(3)$ & $10$K & & & & & &  \\ \hline
- Optimized2 & $3(3)$ & $110$ K & & & & & &  \\ \hline
- \multicolumn{9}{|c|}{\bf\code{FailSafeIter}}\\\hline
-  Original & $0$ & $1.96$M& & & & & &  \\ \hline
- Optimized1 & $0$ & $20$ K & & & & & &  \\ \hline
+ Original   & $44(3)$ & $1.9$M & $0$ & $7.7$K & & & &  \\ \hline
+ Optimized ($\mathcal{L}(A) = 1$K) & $0(3)$  & $10$K  & $0$ & $408$  & & & &  \\
+ \hline Optimized ($\mathcal{L}(A) = 30$K) & $3(3)$  & $110$K & & & & & &  \\
+ \hline \multicolumn{9}{|c|}{\bf\code{FailSafeIter}}\\\hline
+  Original  & $0$     & $1.96$M& & & & & &  \\ \hline
+ Optimized ($\mathcal{L}(A) = 1$K) & $0$     & $20$K  & & & & & &  \\ \hline
  %Optimized2 & & & & & & & &  \\ \hline
  \multicolumn{9}{|c|}{\bf\code{HashSet}}\\\hline
-  Original & $0$ & $11.8$K & & & & & &  \\ \hline
- Optimized1 & $0$ & $5.3$K &  & & & & &  \\ \hline
+  Original  & $0$     & $11.8$K& & & & & &  \\ \hline
+ Optimized($\mathcal{L}(A) = 1$K) & $0$     & $5.3$K &  & & & & &  \\ \hline
  %Optimized2 & & & & & & & &  \\ \hline
  
 \end{tabular}
-\caption{Errors reported and monitors generated for Properties.}
+\caption{Errors reported and monitors generated for different properties.
+$\mathcal{N}(E)$, $\mathcal{N}(A)$ and $\mathcal{L}(A)$ denote \#error reported,
+\#monitor allocation respectively and \#monitor limit respectively.}
 \end{table*}
 \label{table:errorreporting1}
 
