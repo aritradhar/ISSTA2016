@@ -97,15 +97,15 @@ We optimize \textsc{JavaMop} generated aspects by adding statements to the
 particular \code{pointcut} responsible for monitor creation. A \code{HashMap} 
  is added to the aspect that maps between a specific context (\code{long}) and 
 an \code{ArrayList} of monitors associated to that context. Additionally, we 
- determine the probability of creating a monitor at runtime depending on the 
-number of monitors associated to a specific context.\note{but how is the 
-probability calculated?} We also add additional \code{pointcut}s to measure 
-evaluation parameters such as \#monitor, \#events, time and memory consumption 
-of the events individually.
+ determine the probability of creating a monitor (see code snippet in
+ Code~\ref{getProbabilityVal}) at runtime depending on the number of  monitors
+ associated to a specific context.\note{but how is the probability calculated?} 
+ We also add additional \code{pointcut}s to measure evaluation parameters such 
+ as \#monitor, \#events, time and memory consumption of the events individually.
 
 \lstset{escapeinside={/*@}{@*/}, language=Java , caption=\bf
 \code{getProbabilityVal} implementation., label=getProbabilityVal}
-\begin{figure}[t]
+\begin{figure}[h]
 \begin{lstlisting}
 double getProbabilityVal(int counetr)
 {
