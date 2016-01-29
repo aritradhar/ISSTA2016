@@ -6,10 +6,12 @@
 % provided below.
 
 We implement a prototype of our approach (as described in~\xref{sec:approach}) 
-in \textsc{Java}. We use \texttt{Soot}~\cite{soot} for program instrumentation, 
-and leverage the \code{ajc} v$1.7$ compiler to weave aspects. We below mention a 
-few other salient features of our implementation. \note{How many lines of Java 
-code did it involve?}
+in \textsc{Java}. We use \soot~\cite{soot} for program instrumentation, 
+and leverage the \code{ajc} v$1.7$ compiler to weave aspects. The prototype
+is written entirely in \java in $3532$ lines of code (\soot\ instrumentation
+module $334$ and aspect implementation $3198$). We below mention a few other
+salient features of our implementation.
+%\note{How many lines of Java code did it involve?}
 
 %The aspects are then woven using ajc 1.7 compiler, and 
 %the resulting Java program is executed on HPC server running Cent OS 6.5 and
@@ -99,8 +101,9 @@ particular \code{pointcut} responsible for monitor creation. A \code{HashMap}
 an \code{ArrayList} of monitors associated to that context. Additionally, we 
  determine the probability of creating a monitor (see code snippet in
  Code~\ref{getProbabilityVal}) at runtime depending on the number of  monitors
- associated to a specific context.\note{but how is the probability calculated?} 
- We also add additional \code{pointcut}s to measure evaluation parameters such 
+ associated to a specific context. %\note{but how is the probability
+ % calculated?} 
+ We also add additional \code{pointcut}'s to measure evaluation parameters such 
  as \#monitor, \#events, time and memory consumption of the events individually.
 
 \lstset{escapeinside={/*@}{@*/}, language=Java , caption=\bf
