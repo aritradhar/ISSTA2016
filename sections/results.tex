@@ -99,46 +99,40 @@ contain sufficient monitor events. We consider \hasnext, \unsafeiter\ and
 \begin{table*}[!ht]
 \centering
 \scriptsize
-\begin{tabular}{|c|c|c||c|c||c|c||c|c|}
+\begin{tabular}{|c|c|c||c|c||c|c||c|c||c|c|}
 \hline
-\multicolumn{9}{|c|}{\bf\code{HasNext}}\\\hline
+\multicolumn{11}{|c|}{\bf\code{HasNext}}\\\hline
 \multirow{3}{*}{}               & \multicolumn{2}{c||}{bloat}             & 
 \multicolumn{2}{c||}{pmd}            & \multicolumn{2}{c||}{chart}      & 
-\multicolumn{2}{c|}{avrora} \\\cline{2-9} 
+\multicolumn{2}{c||}{avrora} & \multicolumn{2}{c|}{Synthetic}\\\cline{2-11} 
 & $\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$ &
 $\mathcal{N}(E/\mathcal{N}(C))$  & $\mathcal{N}(A)$ &
+$\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$ &
 $\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$ &
 $\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$ 
 \\ \hline
  
  Original   & $44/3$ & $1.9$M & $400/3$ & $1.94$M & $0$ & $817$ & $7.9$K$/9$&
- $898$K
+ $898$K & $6$M$/3$ & $3$M
  \\
  \hline Optimized ($\mathcal{L}(A) = 1$K) & $3/3$  & $10$K  & $322/3$ & $10$K 
- & $0$ & $101$ & $726/9$ & $8.2$K
+ & $0$ & $101$ & $726/9$ & $8.2$K & $7.4$K$/3$ & $7.4$K
  \\
  \hline Optimized ($\mathcal{L}(A) = 30$K) & $3/3$  & $110$K & $390/3$ &
- $224$K & $0$ & $817$ & $10.3$K $/9$ & $119$K
- \\
- \hline \multicolumn{9}{|c|}{\bf\code{FailSafeIter}}\\\hline
-  Original  & $0$     & $1.96$M&  $0$ & $1.94$M & $0$ & $817$ & $0$& $898$K  \\
-  \hline Optimized ($\mathcal{L}(A) = 1$K) & $0$ & $20$K & $0$ & $20$K & $0$ & $324$ &
- $0$ & $16.7$K \\\hline
+ $224$K & $0$ & $817$ & $10.3$K $/9$ & $119$K & $100$K$/3$ & $100$K
+ \\\hline 
+ \multicolumn{11}{|c|}{\bf\code{FailSafeIter}}\\\hline
+  Original & $0$ & $1.96$M&  $0$ & $1.94$M & $0$ & $817$ & $0$& $898$K & &\\\hline 
+  Optimized ($\mathcal{L}(A) = 1$K) & $0$ & $20$K & $0$ & $20$K & $0$ & $324$ &
+ $0$ & $16.7$K & & \\\hline
  %Optimized ($\mathcal{L}(A) = 30$K) & $0$ & $220$K & $0$ & $449$K & $0$ &
 % $324$ & $0$ & $167$K \\\hline
  %Optimized2 & & & & & & & &  \\ \hline
- \multicolumn{9}{|c|}{\bf\code{HashSet}}\\\hline
-  Original  & $0$     & $11.8$K& $0$ & $7.7$ K & - & - & $0$& $8$ \\ \hline
- Optimized($\mathcal{L}(A) = 1$K) & $0$ & $5.3$K & $0$ & $408$ & - & - & $0$&
- $8$
- \\
- \hline
- %Optimized($\mathcal{L}(A) = 30$K) & $0$ & $5.3$K & $0$ & $408$ & - & - & $0$&
-% $8$
- %\\
- %\hline
- %Optimized2 & & & & & & & &  \\ \hline
- 
+ \multicolumn{11}{|c|}{\bf\code{HashSet}}\\\hline
+  Original  & $0$     & $66.8$K& $0$ & $6.8$M & - & - & $0$& $106$  & &\\ \hline
+ Optimized($\mathcal{L}(A) = 1$K) & $0$ & $2.7$K & $0$ & $10$K & - & - & $0$&
+ $99$  & &\\ \hline
+
 \end{tabular}
 \caption{Errors reported and monitors generated for different properties.
 $\mathcal{N}(E)$, $\mathcal{N}(C)$ $\mathcal{N}(A)$ and $\mathcal{L}(A)$ denote
