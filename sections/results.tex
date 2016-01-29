@@ -152,32 +152,32 @@ findings.
 
 \begin{table*}[!ht]
 \centering
-\begin{tabular}{|p{3.7cm}|p{1.2cm}|p{1.5cm}|p{1.2cm}|p{1.5cm}|p{1.2cm}|p{1.5cm}|
-}
+\begin{tabular}{|p{3.7cm}|p{1.2cm}|p{1.5cm}||p{1.2cm}|p{1.5cm}||p{1.2cm}|p{1.5cm}||
+p{1.2cm}|p{1.5cm}|}
 \hline
-\multirow{2}{*}{}               & \multicolumn{2}{c|}{avrora}             & 
-\multicolumn{2}{c|}{bloat}            & \multicolumn{2}{c|}{pmd}              \\ 
-\cline{2-7} 
+
+\multicolumn{9}{|c|}{\bf\code{HasNext}}\\\hline
+\multirow{3}{*}{}               & \multicolumn{2}{c||}{bloat}             & 
+\multicolumn{2}{c||}{pmd}            & \multicolumn{2}{c||}{chart}      & 
+\multicolumn{2}{c|}{avrora} \\\cline{2-9} 
                                        & \# Errors Reported  & \# Monitor 
 Allocations & \# Errors reported & \# Monitor Allocations& \# Errors Reported & 
-\# Monitor Allocations\\ \hline
-Original JavaMOP Aspect                                                    & 0   
-           & 0.91M         & 42          & 1.89M            & 333               
-& 1.95M     \\ \hline
-Optimized JavaMOP Aspect  \# Monitors Limit= 100            & 0             & 
-1.45k           & 0            & 54.6k              & 6                  & 
-10.03k       \\ \hline
-Optimized JavaMOP Aspect  \# Monitors Limit=1k           & 0             & 1.45k 
-          & 0            & 54.6k             & 34.6              & 10.03k       
-\\ \hline
-Optimized JavaMOP Aspect  \# Monitors Limit=10k        & 0             & 1.45k   
-        & 0            & 54.6k             & 130               & 10.03k       \\ 
-\hline
-Optimized JavaMOP Aspect  \# Monitors Limit=100k      & 0             & 1.45k    
-       & 29          & 54.6k             & 131               & 10.03k       \\ 
-\hline
+\# Monitor Allocations & \# Errors Reported & \# Monitor Allocations \\ \hline
+ 
+ Original & & & & & & & &  \\ \hline
+ Optimized1 & & & & & & & &  \\ \hline
+ Optimized2 & & & & & & & &  \\ \hline
+ \multicolumn{9}{|c|}{\bf\code{FailSafeIter}}\\\hline
+  Original & & & & & & & &  \\ \hline
+ Optimized1 & & & & & & & &  \\ \hline
+ Optimized2 & & & & & & & &  \\ \hline
+ \multicolumn{9}{|c|}{\bf\code{HashSet}}\\\hline
+  Original & & & & & & & &  \\ \hline
+ Optimized1 & & & & & & & &  \\ \hline
+ Optimized2 & & & & & & & &  \\ \hline
+ 
 \end{tabular}
-\caption{Errors reported and monitors generated for \texttt{HasNext} Property.}
+\caption{Errors reported and monitors generated for Properties.}
 \end{table*}
 \label{table:errorreporting1}
 
