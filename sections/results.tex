@@ -116,6 +116,7 @@ captured.}
 
 \begin{table*}[!ht]
 \centering
+\scriptsize
 \begin{tabular}{|p{4cm}|c|c|c|c|c|c|}
 \hline
   \multirow{2}{*}{}                                 & 
@@ -133,8 +134,7 @@ Optimised JavaMOP Aspect (limit=10000)   & 0.5  & 0.5  & 0.5   & 0.5  & 0.5  &
 0.5   \\ \hline
 
 \end{tabular}
-\caption{Peak memory usage by the DaCapo benchmarks (in gb). Percentage overhead 
-in the parantheses.}
+\caption{Runtimne of \textsc{DaCapo} benchmarks.}
 \end{table*}
 \label{table:memoryusage}
 
@@ -164,17 +164,17 @@ p{1.2cm}|p{1.5cm}|}
 Allocations & \# Errors reported & \# Monitor Allocations& \# Errors Reported & 
 \# Monitor Allocations & \# Errors Reported & \# Monitor Allocations \\ \hline
  
- Original & & & & & & & &  \\ \hline
- Optimized1 & & & & & & & &  \\ \hline
- Optimized2 & & & & & & & &  \\ \hline
+ Original & $44 (3)$ & $1.9$M & & & & & &  \\ \hline
+ Optimized1 & $0(3)$ & $10$K & & & & & &  \\ \hline
+ Optimized2 & $3(3)$ & $110$ K & & & & & &  \\ \hline
  \multicolumn{9}{|c|}{\bf\code{FailSafeIter}}\\\hline
-  Original & & & & & & & &  \\ \hline
- Optimized1 & & & & & & & &  \\ \hline
- Optimized2 & & & & & & & &  \\ \hline
+  Original & $0$ & $1.96$M& & & & & &  \\ \hline
+ Optimized1 & $0$ & $20$ K & & & & & &  \\ \hline
+ %Optimized2 & & & & & & & &  \\ \hline
  \multicolumn{9}{|c|}{\bf\code{HashSet}}\\\hline
-  Original & & & & & & & &  \\ \hline
- Optimized1 & & & & & & & &  \\ \hline
- Optimized2 & & & & & & & &  \\ \hline
+  Original & $0$ & $11.8$K & & & & & &  \\ \hline
+ Optimized1 & $0$ & $5.3$K &  & & & & &  \\ \hline
+ %Optimized2 & & & & & & & &  \\ \hline
  
 \end{tabular}
 \caption{Errors reported and monitors generated for Properties.}
