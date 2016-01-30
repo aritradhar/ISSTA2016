@@ -126,8 +126,8 @@ object may get iterated over several times before getting garbage collected.
 Coupled with the fact that both \code{Collection}s and \code{Iterator}s are 
 frequently used objects in most programs, the number of monitors grows 
 exponentially. Table~\ref{table:numofmonitors} lists the huge number of 
-monitors observed when monitoring three commonly used \textsf{DaCapo} benchmarks 
-for \code{HasNext} and \code{UnsafeIterator} properties using with \javamop\ 
+monitors observed when monitoring three commonly used \dacapo\ benchmarks 
+for \code{HasNext} and \unsafeiter\ properties using with \javamop\ 
 v$2.3$. The huge number of monitors even for a relatively small number of 
 monitored \code{Collection} and \code{Iterator} objects puts a significant 
 burden on the system and the garbage collector. Furthermore, if the monitor 
