@@ -1,0 +1,41 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Threats to validity}
+\label{sec:discussion:ttv}
+
+Our study is restricted to four \dacapo benchmarks and three \java standard
+library properties. Even though these combinations have been found to be
+challenging to monitor in the past, it is possible that the combinations are not
+representative and results of the study will change if we include more
+combinations. We intend to this extended study in the future.
+
+We used \javamop\ $2.1.2$ as a baseline tool for our prototype implementation. 
+However, the results of the study may change if we use a different tool or a 
+more recent version of JavaMOP. However, using an older version of \javamop had 
+an advantage of being simpler and easier to understand which allowed us to 
+ensure that our optimizations do not interfere with \javamop's optimizations. 
+Moreover, our goal is not compare the performance with JavaMOP, but only to show 
+that our technique is complementary to JavaMOP optimizations and can be used to 
+extend \javamop which would add further to its effectiveness.
+
+The choices of hardware and software platforms, in particular, the server 
+settings may influence the results. In the future we plan to repeat the study on 
+a variety of platforms to understand their impact on the results.
+
+\subsection{Strengths \& Weaknesses}
+\label{sec:discussion:snw}
+
+The results presented in Section~\ref{subsec:results} and the discussion in 
+Section~\ref{subsubsec:efficiencyanddeterminism} indicate that the approach can 
+i) effectively control the memory needs, ii) does not compromise much with the 
+error reporting, iii) provides worst-case bounds to all monitoring operations, 
+and iv) does not produce false positives which preserves its completeness. 
+However, current implementation does not efficiently control the runtime 
+overhead. Table~\ref{table:runtimeoverhead} provides the runtime overheads for 
+the same DaCapo benchmarks and program properties used previously in this 
+section.
+% \note{Add stuff about \\
+% Threats to validity,\\Strengths \& Weaknesses
+% }
+
