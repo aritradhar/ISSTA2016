@@ -49,7 +49,8 @@ unsound as it cannot detect violations for objects that are dropped. However, we
 have ensured the soundness or completeness of our approach even after sampling 
 the objects to reduce the overhead.}
 Researchers have presented approaches that are based on sampling object space 
-\cite{Arnold:OOPSLA08}, sampling time \cite{}, and sampling properties \cite{}. 
+\cite{Arnold:OOPSLA08}, sampling time \cite{BartocciGKSSZS12, StollerBSGHSZ11},
+and sampling properties \cite{dwyer08ase}. 
 Among these approaches, the one presented by Arnold et al.  
 \cite{Arnold:OOPSLA08} is closest to us in its spirit. They develop Quality 
 Virtual Machine (QVM) that tracks safety properties, Java assertions and heap 
@@ -61,8 +62,9 @@ to our approach none of these systems sacrifices completeness for sampling.
 However, unlike our approach none of these systems reuse monitors.
 \\
 \textbf{\textit {Aspect-based and similar monitoring approaches}} A number of 
-finite state runtime monitoring tools including Tracematches \cite{} and JavaMOP 
-\cite{} have been develkoped to detect violations of typestate properties. 
+finite state runtime monitoring tools including Tracematches \cite{Allan:OOPSLA05},
+JavaMOP \cite{meredith-2008}, and MARQ \cite{Reger2015}
+have been developed to detect violations of typestate properties. 
 JavaMOP in particular has been expressive in terms of its specification power 
 and supports various formalisms ranging from regular expressions to context-free 
 grammars. It converts its specification to an aspect which is then woven into a 
@@ -71,11 +73,11 @@ allows various optimizations to be performed making it an efficient monitoring
 tool. In spite of this efficiency, for certain program and property 
 combinations, all of these tools incur heavy and unbounded overheads in terms of 
 memory and time. These scenarios act as the motivation to our research. Various 
-approaches \cite{} have been proposed to control the memory as well as avoid 
-unnenceassary monitoring that cannot lead to any errors. However, in spite of 
+approaches \cite{Avgustinov:2007, luo-2014, meredith-2008, Purandare:2013} have been proposed to control the memory as well as avoid 
+unnecessary monitoring that cannot lead to any errors. However, in spite of 
 these 
 efforts and the effectiveness of their approaches, runtime monitoring still 
-remaining challenging particularly finit state properties.
+remaining challenging particularly finite state properties.
 
 
 \ignore{
@@ -109,7 +111,8 @@ memory usage and at the same time check for typestate property violations.
 
 \textbf{\textit {Hybrid approaches}} Several hybrid approaches have been 
 proposed by research that combine static program analysis with dynamic program 
-analysis \cite{}. The static component of the analysis essentially filters the 
+analysis \cite{Bodden:ECOOP07, bodden:fse08, bodden:icse10, Bodden:RV10, Dwyer:ASE07, Purandare:OOPSLA10}.
+The static component of the analysis essentially filters the 
 program points that do not need to be monitored. These approaches are effective, 
 and have been found to control time overheads up to certain extent but also have 
 been found to be unsatisfactory in many cases. Moreover, they have not been 
