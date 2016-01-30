@@ -20,9 +20,9 @@
   \label{fig:hasnextfsa}
 \end{figure}
 
-The finite state properties that we consider in this work are either typestate
+Finite state properties that we consider in this work are either typestate
 properties or typestate-like properties involving multiple objects that can be
-modeled using a finite state automaton (FSA) \cite~{}.
+modeled using a finite state automaton (FSA) \cite{Strom:TSE86}.
 
 Figure~\ref{fig:unsafeiteratorfsa} depicts an FSA, 
 which models iteration over a \code{Collection}, and codifies that a 
@@ -141,7 +141,7 @@ memory requirements, \ie\ without monitoring. Furthermore, in practice,
 programmers like to monitor programs for \textit{all} interesting properties 
 collectively, and not individually. This collective monitoring of properties 
 becomes extremely difficult, and often infeasible. Prior 
-work~\cite{}\note{Purandare \etal} presents a technique to compact multiple 
+work~\cite{Purandare:2013} presents a technique to compact multiple 
 monitors and track programs for several properties simultaneously. However, the 
 resource footprint can still be significant and prohibitively high for 
 resource-constrained systems, because compaction reaches its limit quickly when 
