@@ -12,12 +12,12 @@ combinations. We intend to this extended study in the future.
 
 We used \javamop\ $2.1.2$ as a baseline tool for our prototype implementation. 
 However, the results of the study may change if we use a different tool or a 
-more recent version of JavaMOP. However, using an older version of \javamop had 
+more recent version of \javamop. However, using an older version of \javamop had 
 an advantage of being simpler and easier to understand which allowed us to 
 ensure that our optimizations do not interfere with \javamop's optimizations. 
-Moreover, our goal is not compare the performance with JavaMOP, but only to show 
-that our technique is complementary to JavaMOP optimizations and can be used to 
-extend \javamop which would add further to its effectiveness.
+Moreover, our goal is not compare the performance with \javamop, but only to show 
+that our technique is complementary to \javamop\ optimizations and can be used to 
+extend \javamop\ which would add further to its effectiveness.
 
 The choices of hardware and software platforms, in particular, the server 
 settings may influence the results. In the future we plan to repeat the study on 
@@ -26,15 +26,17 @@ a variety of platforms to understand their impact on the results.
 \subsection{Strengths \& Weaknesses}
 \label{sec:discussion:snw}
 
-The results presented in Section~\ref{subsec:results} and the discussion in 
-Section~\ref{subsubsec:efficiencyanddeterminism} indicate that the approach can 
-i) effectively control the memory needs, ii) does not compromise much with the 
-error reporting, iii) provides worst-case bounds to all monitoring operations, 
-and iv) does not produce false positives which preserves its completeness. 
+The results presented in~\xref{sec:evaluation} indicate that the approach can 
+\textbf{i)} effectively control the memory needs, \textbf{ii)} does not
+compromise much with the error reporting, \textbf{iii)} provides worst-case
+bounds to all monitoring operations, and \textbf{iv)} does not produce false
+positives which preserves its completeness.
 However, current implementation does not efficiently control the runtime 
-overhead. Table~\ref{table:runtimeoverhead} provides the runtime overheads for 
-the same DaCapo benchmarks and program properties used previously in this 
-section.
+overhead. Table~\ref{table:time} and~\ref{table:memory} provides the runtime
+overheads for the same \dacapo\ benchmarks and program properties. From overhead
+data, it is evident that our approach of using method context
+(see~\xref{subsec:trace}) introduces significant lesser overhead compared to
+standard \texttt{getStackTrace()} method.
 % \note{Add stuff about \\
 % Threats to validity,\\Strengths \& Weaknesses
 % }
