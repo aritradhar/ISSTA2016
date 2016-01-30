@@ -169,10 +169,10 @@ systems suffer degraded performance with uncontrolled resource usage and
 execution overhead for monitoring systems.
  
  \item \textbf{Redundant monitors}: For the same set of \textsf{DaCapo} 
-benchmarks and properties, we also observed that all $42$ errors reported while 
-monitoring \textit{bloat} for property \texttt{HasNext}, and $333$ errors 
-reported by \textit{pmd} can be partitioned into two distinct classes of errors 
-that shared similar execution context, \ie\ method calls.
+benchmarks and properties, we also observed that all $44$ errors reported while 
+monitoring \textit{bloat} for property \texttt{HasNext}, and $400$ errors 
+reported by \textit{pmd} can be partitioned into three distinct classes of errors 
+based on their execution context, \ie\ method calls.
 % 
 % % we need not explain the optimization here.
 % For this work, we associated an execution context with a method calling 
@@ -181,10 +181,10 @@ that shared similar execution context, \ie\ method calls.
 % and the data was collected  by considering limited execution context for 
 % efficiency reasons. 
 % 
-These observations indicate that several monitors catch the same redundant 
+This observation indicates that several monitors catch the same redundant 
 errors, which clearly is not intelligent reporting to the developer. Ideally, 
-the monitors must report only distinct errors, \ie\ only $3$ distinct errors 
-for \textit{bloat}, and $2$ for \textit{pmd}. 
+the monitors must report only distinct errors, \ie\ $3$ each
+for \textit{bloat} and \textit{pmd}. 
 %\note{This needs to be clarified --- 2 distinct classes, and 3 and 2 errors respectively.}
 Hence, we believe that sampling-based monitoring that leverage the program execution 
 context would be significantly more effective and consume much less resources.
