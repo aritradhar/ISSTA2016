@@ -288,14 +288,15 @@ monitors (see Table~\ref{table:errorreporting1}).
 % operations?
 % }
 We now address \textbf{RQ3}, \ie\ bound on worst case execution time. We
-experimet on \bloat\ and observe the execution time with both
+experiment on \bloat\ and observe the execution time with both
 \javamop\ generated aspects and our optimized aspect. The rationale behind choosing
-only the \bloat\ for this experiment is in \bloat\ we get significant amount of
-\hasnext\ violation compared to other \dacapo\ benchmark (refer Table~\ref{table:errorreporting1}). 
+only the \bloat\ for this experiment is that we notice very high number of
+monitors associated to single object in \unsafeiter property 
+hence making monitoring hard.
 Table~\ref{table:eventTime} lists  the execution time corresponding to each
-events. We observe significant reduction of event time across all cases.
-Specifically, for the \hasnext\ property, we observe $\sim$$99\%$ reduction
-of maximum event time for the \texttt{create} event.
+events. We observe significant reduction of event times across all cases.
+Specifically, for the \unsafeiter\ property, we observe $\sim$$96\%$ reduction
+of maximum event time for the \texttt{update} event.
 
 \subsection{Effectiveness of the approach}
 \label{sec:evaluation:effectiveness}
