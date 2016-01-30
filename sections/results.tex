@@ -168,22 +168,25 @@ allocation and \#monitor limit respectively.}
  \bf create  &
  \bf update & \bf next       \\  \cline{2-8} 
  
- & \bloat & 13 & 2 & 2 & 2 & 2 & 2 \\\cline{2-8} 
- & \pmd   & 84 & - & 18& 3 & - & 22 \\\cline{2-8} 
- & \chart & - & - & - & - & - & - \\\cline{2-8} 
- & \avrora & 2 & - & 5 & 1 & - & 1 \\\cline{1-8} \hline
+ & \bloat & 322 & 1 & 2 & 6 & 1 & 2 \\\cline{2-8} 
+ & \pmd   & 147 & 1 & 12& 4 & 1 & 12 \\\cline{2-8} 
+ & \chart & 1 & 5 & 1 & 1 & 5 & 1 \\\cline{2-8} 
+ & \avrora & 275 & 29 & 1 & 12 & 8 & 1 \\\cline{1-8} \hline
 
 
                                                                                  
- \multirow{5}{*}{\bf \texttt{HasNext} property}  &   & \bf add  &
- \bf remove & \bf contain &
- \bf add  &
- \bf remove& \bf contain       \\  \cline{2-8} 
+ \multirow{5}{*}{\bf \texttt{HasNext} property}   & &
+ \multicolumn{2}{c|}{\bf hasnext} & \bf next &
+ \multicolumn{2}{c|}{\bf hasnext} & \bf next       \\  \cline{2-8} 
  
- & \bloat & 13 & 2 & 2 & 2 & 2 & 2 \\\cline{2-8} 
- & \pmd   & 84 & - & 18& 3 & - & 22 \\\cline{2-8} 
- & \chart & - & - & - & - & - & - \\\cline{2-8} 
- & \avrora & 2 & - & 5 & 1 & - & 1 \\\cline{1-8} 
+ & \bloat  &  \multicolumn{2}{c|}{81}  & 9  & \multicolumn{2}{c|}{1} & 2
+ \\\cline{2-8} 
+ & \pmd    &  \multicolumn{2}{c|}{222}  & 2 & \multicolumn{2}{c|}{1}  & 1
+ \\\cline{2-8} 
+ & \chart  &  \multicolumn{2}{c|}{2}  & 5  & \multicolumn{2}{c|}{1}  & 5
+ \\\cline{2-8} 
+ & \avrora &  \multicolumn{2}{c|}{75} & 1  & \multicolumn{2}{c|}{1}  & 1
+ \\\cline{1-8} \hline
  
 
 \end{tabular}
@@ -228,14 +231,13 @@ monitors (see Table~\ref{table:errorreporting1}).
 % Q2. Does our approach bound worst case execution time for all monitoring 
 % operations?
 % }
-We now address \textbf{RQ3}, \ie\ bound on worst case execution time. We select 
-the \bloat\ benchmark, and observe the execution time with both \javamop\ 
-generated aspects and our optimized aspect. Table~\ref{table:eventTime} lists 
-the execution time corresponding to each events. We observe significant 
-reduction of event time across all cases. Specifically, for the \hashset\ 
-property, we observe $\sim$$99\%$ reduction of maximum event time for the 
-\texttt{add} event. \note{what about the other benchmarks; why did we not do it 
-for them.}
+We now address \textbf{RQ3}, \ie\ bound on worst case execution time. We
+experimet on the \dacapo\ benchmarks, and observe the execution time with both
+\javamop\ generated aspects and our optimized aspect. 
+Table~\ref{table:eventTime} lists  the execution time corresponding to each
+events. We observe significant reduction of event time across all cases.
+Specifically, for the \unsafeiter\ property, we observe $\sim$$99\%$ reduction
+of maximum event time for the \texttt{create} event in \bloat.
 
 \subsection{Effectiveness of the approach}
 \label{sec:evaluation:effectiveness}
