@@ -146,48 +146,48 @@ allocation and \#monitor limit respectively.}
 \begin{table*}[!ht]
 \centering
 \scriptsize
-\begin{tabular}{|c|c|c|c|c|c|c||c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
 \hline
-\multirow{1}{*}{}                                                                
-     & \multicolumn{6}{c||}{\bf Original aspect} & 
-\multicolumn{6}{c|}{\bf Optimized aspects} \\ \cline{1-13} 
+\multirow{1}{*}{} & \multirow{1}{*}{}                                                                
+     & \multicolumn{3}{c||}{\bf Original aspect} & 
+\multicolumn{3}{c|}{\bf Optimized aspects} \\ \cline{1-8} 
                                                                                  
- \multirow{3}{*}{\bf HashSet property}    & \multicolumn{2}{c|}{\bf add}  &
- \multicolumn{2}{c|}{\bf remove} & \multicolumn{2}{c||}{\bf contain} &
- \multicolumn{2}{c|}{\bf add}   &
- \multicolumn{2}{c|}{\bf remove} & \multicolumn{2}{c|}{\bf contain}         \\
- \cline{2-13} & max & min & max & min & max & min & max & min & max & min & max & min
- \\\cline{2-13}  
- &  $11$ & $1$   &   $3$     & $1$   &  $1$   & $1$   &   $1$    & $1$   &  $1$   
- & $1$ & $2$ & $1$\\\hline
+ \multirow{5}{*}{\bf \texttt{HashSet} property}  &   & \bf add  &
+ \bf remove & \bf contain &
+ \bf add  &
+ \bf remove& \bf contain       \\  \cline{2-8} 
  
-  \multirow{3}{*}{\bf UnsafeIter property}    & \multicolumn{2}{c|}{\bf create} 
-  & \multicolumn{2}{c|}{\bf update} & \multicolumn{2}{c||}{\bf next} &
- \multicolumn{2}{c|}{\bf create}   &
- \multicolumn{2}{c|}{\bf update} & \multicolumn{2}{c|}{\bf next}         \\
- \cline{2-13} & max & min & max & min & max & min & max & min & max & min & max & min
- \\\cline{2-13}  
- &  $1592$ & $1$   &   $65$     & $1$   &  $5$   & $1$   &   $37$    & $1$   & 
- $2$ & $1$ & $80$ & $1$\\\hline
+ & \bloat & 13 & 2 & 2 & 2 & 2 & 2 \\\cline{2-8} 
+ & \pmd   & 84 & - & 18& 3 & - & 22 \\\cline{2-8} 
+ & \chart & - & - & - & - & - & - \\\cline{2-8} 
+ & \avrora & 2 & - & 5 & 1 & - & 1 \\\cline{1-8} \hline
  
-   \multirow{3}{*}{\bf HasNext property}    & \multicolumn{3}{c|}{\bf hasNext} 
-   & \multicolumn{3}{c||}{\bf next} &
- \multicolumn{3}{c|}{\bf hasNext}   & \multicolumn{3}{c|}{\bf next} \\
- \cline{2-13}
+                                                                                 
+ \multirow{5}{*}{\bf \texttt{FailSafeIter} property}  &   & \bf create  &
+ \bf update & \bf next &
+ \bf create  &
+ \bf update & \bf next       \\  \cline{2-8} 
  
- & \multicolumn{1}{c|}{max} & \multicolumn{2}{c|}{min} &  
- \multicolumn{1}{c|}{max} & \multicolumn{2}{c||}{min} &
- \multicolumn{1}{c|}{max} & \multicolumn{2}{c|}{min} &
- \multicolumn{1}{c|}{max} & \multicolumn{2}{c|}{min}  \\\cline{2-13}  
- &   \multicolumn{1}{c|}{$944$} & \multicolumn{2}{c|}{$1$}   &  
- \multicolumn{1}{c|}{$89$} & \multicolumn{2}{c||}{$1$} &  
- \multicolumn{1}{c|}{$3$}   & \multicolumn{2}{c|}{$1$}   & 
- \multicolumn{1}{c|}{$10$}   & \multicolumn{2}{c|}{$1$}   \\\hline
+ & \bloat & 13 & 2 & 2 & 2 & 2 & 2 \\\cline{2-8} 
+ & \pmd   & 84 & - & 18& 3 & - & 22 \\\cline{2-8} 
+ & \chart & - & - & - & - & - & - \\\cline{2-8} 
+ & \avrora & 2 & - & 5 & 1 & - & 1 \\\cline{1-8} \hline
+
+
+                                                                                 
+ \multirow{5}{*}{\bf \texttt{HasNext} property}  &   & \bf add  &
+ \bf remove & \bf contain &
+ \bf add  &
+ \bf remove& \bf contain       \\  \cline{2-8} 
  
+ & \bloat & 13 & 2 & 2 & 2 & 2 & 2 \\\cline{2-8} 
+ & \pmd   & 84 & - & 18& 3 & - & 22 \\\cline{2-8} 
+ & \chart & - & - & - & - & - & - \\\cline{2-8} 
+ & \avrora & 2 & - & 5 & 1 & - & 1 \\\cline{1-8} 
  
 
 \end{tabular}
-\caption{Comparison of event times(ms) of \dacapo\ \bloat.}
+\caption{Comparison of event times(ms) of \dacapo\ benchmarks.}
 \label{table:eventTime}
 \end{table*}
 
