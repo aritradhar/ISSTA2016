@@ -1,10 +1,12 @@
 \section{Terminology and Definitions}
 \label{sec:definition}
 
-The finite state properties that we consider in this work are either typestate
-properties or typestate-like properties involving 
-multiple objects \cite~{}. These properties can be modeled using deterministic DFA 
-represented by the tuple $(Q, \Sigma, q_0, \delta, F, err)$, where 
+%The finite state properties that we consider in this work are either typestate
+%properties or typestate-like properties involving 
+%multiple objects \cite~{}.
+
+Finite state properties can be modeled using deterministic DFA 
+represented by a tuple $(Q, \Sigma, q_0, \delta, F, err)$, where 
 $Q$ is the set of states, $\Sigma$ is the set of symbols, $q_0 \in Q$ is the 
 start state, $\delta : Q \times \Sigma \to Q$ is the state transition function, 
 $F \subset Q$ is the set of accept states, and $err$ is the designated error 

@@ -20,7 +20,11 @@
   \label{fig:hasnextfsa}
 \end{figure}
 
-Figure~\ref{fig:unsafeiteratorfsa} depicts a finite state automaton (FSA), 
+The finite state properties that we consider in this work are either typestate
+properties or typestate-like properties involving multiple objects that can be
+modeled using a finite state automaton (FSA) \cite~{}.
+
+Figure~\ref{fig:unsafeiteratorfsa} depicts an FSA, 
 which models iteration over a \code{Collection}, and codifies that a 
 \code{Collection} must never be updated while it is being iterated over. The 
 symbols \textit{create}, \textit{update}, and \textit{next} correspond to 
@@ -35,6 +39,27 @@ which states that \code{HasNext} must be invoked every time prior to invoking
 
 \subsection{Monitoring Systems}
 \label{sec:motivation:monitor}
+
+\begin{figure}[t]
+\centering
+  \includegraphics[width=\linewidth, trim = 0 2cm 0 0]{./images/general_monitoring_scheme.pdf}
+  \caption[Schematic of Memory-efficient and Time-Deterministic Monitoring 
+System]{Schematic of Memory-efficient and Time-Deterministic Monitoring System.}
+  \label{fig:general_schematic}
+\end{figure}
+
+Figure~\ref{fig:general_schematic} depicts a general monitoring scheme that takes as 
+an input an instrumented program and a property to be monitored. The program
+instrumentation corresponds to the extra code added for program statements 
+that are relevant to the property. This extra code generates events at the runtime
+which are tracked by the monitoring system. An event is parameterized by
+the objects and it has a symbol associated with it. This information is analyzed
+by the monitor creation module to see if a new monitor needs to be created. A
+monitor may contain a property FSA, references to the associated objects, and its
+current state. If the system decides to create a new monitor, a monitor is created
+and added to various pools
+associated with the related objects, and then tracked for all future events
+related to it. In case a monitor moves to the error state, it reports the error.
 
 \code{Collection}s and \code{Iterator}s are commonly used objects, and also 
 frequent sources of errors \cite{}. Thus, common monitoring systems, like 
