@@ -127,7 +127,7 @@ Coupled with the fact that both \code{Collection}s and \code{Iterator}s are
 frequently used objects in most programs, the number of monitors grows 
 exponentially. Table~\ref{table:numofmonitors} lists the huge number of 
 monitors observed when monitoring three commonly used \textsf{DaCapo} benchmarks 
-for \code{HasNext} and \code{UnsafeIterator} properties using with JavaMOP 
+for \code{HasNext} and \code{UnsafeIterator} properties using with \javamop\ 
 v$2.3$. The huge number of monitors even for a relatively small number of 
 monitored \code{Collection} and \code{Iterator} objects puts a significant 
 burden on the system and the garbage collector. Furthermore, if the monitor 
@@ -135,7 +135,7 @@ objects are live, the garbage collector cannot even reclaim them.
  
  \item \textbf{High memory usage}: Table~\ref{table:consumedmemory} lists the 
 memory consumption of the benchmarks with and without monitoring using 
-\textsc{JavaMOP} v$2.3$. We observe that the large number of monitors results 
+\javamop\ v$2.3$. We observe that the large number of monitors results 
 significantly large memory consumption, in contrast to the benchmarks' normal 
 memory requirements, \ie\ without monitoring. Furthermore, in practice, 
 programmers like to monitor programs for \textit{all} interesting properties 
@@ -168,10 +168,10 @@ where performance guarantees are not essential. In any case, however, most
 systems suffer degraded performance with uncontrolled resource usage and 
 execution overhead for monitoring systems.
  
- \item \textbf{Redundant monitors}: For the same set of \textsf{DaCapo} 
+ \item \textbf{Redundant monitors}: For the same set of \dacapo\ 
 benchmarks and properties, we also observed that all $44$ errors reported while 
-monitoring \textit{bloat} for property \texttt{HasNext}, and $400$ errors 
-reported by \textit{pmd} can be partitioned into three distinct classes of errors 
+monitoring \bloat\ for property \hasnext, and $400$ errors 
+reported by \pmd\ can be partitioned into three distinct classes of errors 
 based on their execution context, \ie\ method calls.
 % 
 % % we need not explain the optimization here.
