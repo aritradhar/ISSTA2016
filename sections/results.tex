@@ -45,8 +45,8 @@ Purandare:2013}.
  & bloat & pmd & chart & avrora & bloat & pmd & chart & avrora& bloat
  & pmd & chart & avrora\\ \hline
  
-  Original  & $20694$ & $15551$ & $7074$ & $52825$ & $23471$ & $20688$ & $6909$
-  & $56873$ & $16031$ & $17017$ & - & $52895$\\\hline
+  Unoptimized  & $20694$ & $15551$ & $7074$ & $52825$ & $23471$ & $20688$ &
+  $6909$ & $56873$ & $16031$ & $17017$ & - & $52895$\\\hline
  
  Optimized ($\mathcal{L}(A) = 1$K)  & $13225$ & $13891$ & $6293$ & $52857$ &
  $18406$ & $13249$ & $6960$ & $55314$ & $16681$ & $17940$ & - & $54080$\\\hline
@@ -76,7 +76,7 @@ Purandare:2013}.
  & bloat & pmd & chart & avrora & bloat & pmd & chart & avrora& bloat
  & pmd & chart & avrora\\ \hline
  
-  Original  & $0.85$ & $0.8$ & $0.45$ & $1.1$ & 
+  Unoptimized  & $0.85$ & $0.8$ & $0.45$ & $1.1$ & 
               $0.85$ & $0.9$ & $0.32$ & $1.2$ & 
               $0.79$ & $0.89$ & - & $1.1$\\\hline
  
@@ -114,7 +114,7 @@ $\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$ &
 $\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$ 
 \\ \hline
  
- Original   & $44/3$ & $1.9$M & $400/3$ & $1.94$M & $0$ & $817$ & $7.9$K$/9$&
+ Unoptimized   & $44/3$ & $1.9$M & $400/3$ & $1.94$M & $0$ & $817$ & $7.9$K$/9$&
  $898$K & $6$M$/3$ & $3$M
  \\
  \hline Optimized ($\mathcal{L}(A) = 1$K) & $3/3$  & $10$K  & $322/3$ & $10$K 
@@ -124,14 +124,14 @@ $\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$
  $224$K & $0$ & $817$ & $10.3$K $/9$ & $119$K & $100$K$/3$ & $100$K
  \\\hline 
  \multicolumn{11}{|c|}{\bf\code{FailSafeIter}}\\\hline
-  Original & $0$ & $1.96$M&  $0$ & $1.94$M & $0$ & $817$ & $0$& $898$K &
+  Unoptimized & $0$ & $1.96$M&  $0$ & $1.94$M & $0$ & $817$ & $0$& $898$K &
   -&-\\\hline Optimized ($\mathcal{L}(A) = 1$K) & $0$ & $20$K & $0$ & $20$K &
   $0$ & $324$ & $0$ & $16.7$K &- & -\\\hline
  %Optimized ($\mathcal{L}(A) = 30$K) & $0$ & $220$K & $0$ & $449$K & $0$ &
 % $324$ & $0$ & $167$K \\\hline
  %Optimized2 & & & & & & & &  \\ \hline
  \multicolumn{11}{|c|}{\bf\code{HashSet}}\\\hline
-  Original  & $0$     & $66.8$K& $0$ & $6.8$M & - & - & $0$& $106$  & -&-\\
+  Unoptimized  & $0$     & $66.8$K& $0$ & $6.8$M & - & - & $0$& $106$  & -&-\\
   \hline Optimized($\mathcal{L}(A) = 1$K) & $0$ & $2.7$K & $0$ & $10$K & - & - & $0$&
  $99$  & -&-\\ \hline
 
@@ -145,59 +145,109 @@ allocation and \#monitor limit respectively.}
 
 
 
-\begin{table*}[!ht]
-\centering
-\small
-\begin{tabular}{|c|c|c|c|c||c|c|c|}
-\hline
-\multirow{1}{*}{} & \multirow{1}{*}{}                                                                
-     & \multicolumn{3}{c||}{\bf Original aspect} & 
-\multicolumn{3}{c|}{\bf Optimized aspects} \\ \cline{1-8} 
-                                                                                 
- \multirow{5}{*}{\bf \texttt{HashSet} property}  &   & \bf add  &
- \bf remove & \bf contain &
- \bf add  &
- \bf remove& \bf contain       \\  \cline{2-8} 
- 
- & \bloat & 13 & 2 & 2 & 2 & 2 & 2 \\\cline{2-8} 
- & \pmd   & 84 & - & 18& 3 & - & 22 \\\cline{2-8} 
- & \chart & - & - & - & - & - & - \\\cline{2-8} 
- & \avrora & 2 & - & 5 & 1 & - & 1 \\\cline{1-8} \hline
- 
-                                                                                 
- \multirow{5}{*}{\bf \texttt{FailSafeIter} property}  &   & \bf create  &
- \bf update & \bf next &
- \bf create  &
- \bf update & \bf next       \\  \cline{2-8} 
- 
- & \bloat & 322 & 1 & 2 & 6 & 1 & 2 \\\cline{2-8} 
- & \pmd   & 147 & 1 & 12& 4 & 1 & 12 \\\cline{2-8} 
- & \chart & 1 & 5 & 1 & 1 & 5 & 1 \\\cline{2-8} 
- & \avrora & 275 & 29 & 1 & 12 & 8 & 1 \\\cline{1-8} \hline
-
-
-                                                                                 
- \multirow{5}{*}{\bf \texttt{HasNext} property}   & &
- \multicolumn{2}{c|}{\bf hasnext} & \bf next &
- \multicolumn{2}{c|}{\bf hasnext} & \bf next       \\  \cline{2-8} 
- 
- & \bloat  &  \multicolumn{2}{c|}{81}  & 9  & \multicolumn{2}{c|}{1} & 2
- \\\cline{2-8} 
- & \pmd    &  \multicolumn{2}{c|}{222}  & 2 & \multicolumn{2}{c|}{1}  & 1
- \\\cline{2-8} 
- & \chart  &  \multicolumn{2}{c|}{2}  & 5  & \multicolumn{2}{c|}{1}  & 5
- \\\cline{2-8} 
- & \avrora &  \multicolumn{2}{c|}{75} & 1  & \multicolumn{2}{c|}{1}  & 1
- \\\cline{1-8} \hline
- 
-
-\end{tabular}
-\caption{Comparison of event times(ms) of \dacapo\ benchmarks.}
-\label{table:eventTime}
-\end{table*}
+% \begin{table*}[!ht]
+% \centering
+% \small
+% \begin{tabular}{|c|c|c|c|c||c|c|c|}
+% \hline
+% \multirow{1}{*}{} & \multirow{1}{*}{}                                                                
+%      & \multicolumn{3}{c||}{\bf Original aspect} & 
+% \multicolumn{3}{c|}{\bf Optimized aspects} \\ \cline{1-8} 
+%                                                                                  
+%  \multirow{5}{*}{\bf \texttt{HashSet} property}  &   & \bf add  &
+%  \bf remove & \bf contain &
+%  \bf add  &
+%  \bf remove& \bf contain       \\  \cline{2-8} 
+%  
+%  & \bloat & 13 & 2 & 2 & 2 & 2 & 2 \\\cline{2-8} 
+%  & \pmd   & 84 & - & 18& 3 & - & 22 \\\cline{2-8} 
+%  & \chart & - & - & - & - & - & - \\\cline{2-8} 
+%  & \avrora & 2 & - & 5 & 1 & - & 1 \\\cline{1-8} \hline
+%  
+%                                                                                  
+%  \multirow{5}{*}{\bf \texttt{FailSafeIter} property}  &   & \bf create  &
+%  \bf update & \bf next &
+%  \bf create  &
+%  \bf update & \bf next       \\  \cline{2-8} 
+%  
+%  & \bloat & 322 & 1 & 2 & 6 & 1 & 2 \\\cline{2-8} 
+%  & \pmd   & 147 & 1 & 12& 4 & 1 & 12 \\\cline{2-8} 
+%  & \chart & 1 & 5 & 1 & 1 & 5 & 1 \\\cline{2-8} 
+%  & \avrora & 275 & 29 & 1 & 12 & 8 & 1 \\\cline{1-8} \hline
+% 
+% 
+%                                                                                  
+%  \multirow{5}{*}{\bf \texttt{HasNext} property}   & &
+%  \multicolumn{2}{c|}{\bf hasnext} & \bf next &
+%  \multicolumn{2}{c|}{\bf hasnext} & \bf next       \\  \cline{2-8} 
+%  
+%  & \bloat  &  \multicolumn{2}{c|}{81}  & 9  & \multicolumn{2}{c|}{1} & 2
+%  \\\cline{2-8} 
+%  & \pmd    &  \multicolumn{2}{c|}{222}  & 2 & \multicolumn{2}{c|}{1}  & 1
+%  \\\cline{2-8} 
+%  & \chart  &  \multicolumn{2}{c|}{2}  & 5  & \multicolumn{2}{c|}{1}  & 5
+%  \\\cline{2-8} 
+%  & \avrora &  \multicolumn{2}{c|}{75} & 1  & \multicolumn{2}{c|}{1}  & 1
+%  \\\cline{1-8} \hline
+%  
+% 
+% \end{tabular}
+% \caption{Comparison of event times(ms) of \dacapo\ benchmarks.}
+% \label{table:eventTime}
+% \end{table*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{table*}[!ht]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|c|c|c||c|c|c|c|c|c|}
+\hline
+\multirow{1}{*}{}                                                                
+     & \multicolumn{6}{c||}{\bf Unoptimized aspect} & 
+\multicolumn{6}{c|}{\bf Optimized aspects} \\ \cline{1-13} 
+                                                                                 
+ \multirow{3}{*}{\bf HashSet property}    & \multicolumn{2}{c|}{\bf add}  &
+ \multicolumn{2}{c|}{\bf remove} & \multicolumn{2}{c||}{\bf contain} &
+ \multicolumn{2}{c|}{\bf add}   &
+ \multicolumn{2}{c|}{\bf remove} & \multicolumn{2}{c|}{\bf contain}         \\
+ \cline{2-13} & max & min & max & min & max & min & max & min & max & min & max & min
+ \\\cline{2-13}  
+ &  $11$ & $1$   &   $3$     & $1$   &  $1$   & $1$   &   $1$    & $1$   &  $1$   
+ & $1$ & $2$ & $1$\\\hline
+ 
+  \multirow{3}{*}{\bf UnsafeIter property}    & \multicolumn{2}{c|}{\bf create} 
+  & \multicolumn{2}{c|}{\bf update} & \multicolumn{2}{c||}{\bf next} &
+ \multicolumn{2}{c|}{\bf create}   &
+ \multicolumn{2}{c|}{\bf update} & \multicolumn{2}{c|}{\bf next}         \\
+ \cline{2-13} & max & min & max & min & max & min & max & min & max & min & max & min
+ \\\cline{2-13}  
+ &  $1592$ & $1$   &   $65$     & $1$   &  $5$   & $1$   &   $37$    & $1$   & 
+ $2$ & $1$ & $80$ & $1$\\\hline
+ 
+   \multirow{3}{*}{\bf HasNext property}    & \multicolumn{3}{c|}{\bf hasNext} 
+   & \multicolumn{3}{c||}{\bf next} &
+ \multicolumn{3}{c|}{\bf hasNext}   & \multicolumn{3}{c|}{\bf next} \\
+ \cline{2-13}
+ 
+ & \multicolumn{1}{c|}{max} & \multicolumn{2}{c|}{min} &  
+ \multicolumn{1}{c|}{max} & \multicolumn{2}{c||}{min} &
+ \multicolumn{1}{c|}{max} & \multicolumn{2}{c|}{min} &
+ \multicolumn{1}{c|}{max} & \multicolumn{2}{c|}{min}  \\\cline{2-13}  
+ &   \multicolumn{1}{c|}{$944$} & \multicolumn{2}{c|}{$1$}   &  
+ \multicolumn{1}{c|}{$89$} & \multicolumn{2}{c||}{$1$} &  
+ \multicolumn{1}{c|}{$3$}   & \multicolumn{2}{c|}{$1$}   & 
+ \multicolumn{1}{c|}{$10$}   & \multicolumn{2}{c|}{$1$}   \\\hline
+ 
+ 
+
+\end{tabular}
+\caption{Comparison of event times(ms) of \dacapo\ \bloat.}
+\label{table:eventTime}
+\end{table*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Resource Consumption}
 \label{sec:evaluation:resource}
@@ -215,7 +265,7 @@ understand the resource consumption of our approach. We execute the four
 consumption. Tables~\ref{table:time} and~\ref{table:memory} list the results.
 % Table~\ref{table:time} tabulates all the run time of benchmark execution in ms. 
 We compare the performance against the aspects generated by \javamop, which is 
-denoted as \emph{Original} in the table. \emph{Optimized($\mathcal{L}(a) = 1K$)} 
+denoted as \emph{Unoptimized} in the table. \emph{Optimized($\mathcal{L}(a) = 1K$)} 
 and \emph{Optimized($\mathcal{L}(a) = 30K$)} denote the optimized monitors with 
 $1$K and $30$K limit on the size of monitor pool. We observe that for many cases 
 the benchmarks with the optimized monitor execute faster than the unoptimized one.
@@ -238,12 +288,14 @@ monitors (see Table~\ref{table:errorreporting1}).
 % operations?
 % }
 We now address \textbf{RQ3}, \ie\ bound on worst case execution time. We
-experimet on the \dacapo\ benchmarks, and observe the execution time with both
-\javamop\ generated aspects and our optimized aspect. 
+experimet on \bloat\ and observe the execution time with both
+\javamop\ generated aspects and our optimized aspect. The rationale behind choosing
+only the \bloat\ for this experiment is in \bloat\ we get significant amount of
+\hasnext\ violation compared to other \dacapo\ benchmark (refer Table~\ref{table:errorreporting1}). 
 Table~\ref{table:eventTime} lists  the execution time corresponding to each
 events. We observe significant reduction of event time across all cases.
-Specifically, for the \unsafeiter\ property, we observe $\sim$$99\%$ reduction
-of maximum event time for the \texttt{create} event in \bloat.
+Specifically, for the \hasnext\ property, we observe $\sim$$99\%$ reduction
+of maximum event time for the \texttt{create} event.
 
 \subsection{Effectiveness of the approach}
 \label{sec:evaluation:effectiveness}
@@ -257,7 +309,7 @@ We test the effectiveness of our approach (\ie\ \textbf{RQ4}) by determining
 if our approach missed out on errors due to the less monitors generated. We 
 measure the number of reported errors($\mathcal{N}(E)$) and the number of 
 monitors allocated ($\mathcal{N}(M)$) under three scenarios : \textbf{(a)}
-\emph{Original}: aspects generated by \javamop, 
+\emph{Unoptimized}: aspects generated by \javamop, 
 \textbf{(b)}\emph{Optimized($\mathcal{L}(a) = 1K$)} optimized aspect with $1$K 
 monitor bound on global monitor pool, and \textbf{(c)} 
 \emph{Optimized($\mathcal{L}(a) = 30K$)} optimized aspect with $1$K monitor
