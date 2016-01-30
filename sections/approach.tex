@@ -212,6 +212,32 @@ the error is reported. This final step is similar to the conventional
 monitoring, except that no monitor will be tracked if the system does not see 
 any monitor allocated.
 
+\subsection{Correctness}
+\label{subsec:correctness}
+
+We define correctness of our algorithm by arguing about its \textit{soundness} and \textit{completeness}
+with respect to the general unoptimized approach. The major difference between 
+the two approaches is in the way the monitors are generated. The unoptimized approach
+creates new monitors after every creation event, whereas we either allocate them
+from the pool or skip the allocation completely. The allocation can be further divided
+into two cases: a) In the case when we allocate a fresh monitor from the pool, there is no
+difference in the way the newly allocated monitor is tracked in the two approaches, and the
+correctness argument should automatically hold. b) In the case when
+we reuse a monitor, we first remove all of the current bindings by removing
+the monitor from all of the local pools. This ensures that there is no undesirable side-effect
+and the newly allocated monitor tracks the only events that are related to the new set of
+objects. As a result \textit{false positives} are never produced and the completeness is
+never compromised. Similarly for completely skipped monitors false error reports are 
+never reported for obvious reasons.
+
+Runtime monitoring is inherently 
+unsound \cite{}. It can report only based on what it has observed. This means errors 
+may not be reported if the paths that encounter them are not exercised. In both of the allocation cases
+discussed above, if the newly allocated monitor gets reallocated in the future before it can report
+any error, we may lose the system's soundness further with respect to the unoptimized approach. The same argument 
+applied to the skip case. Note that all monitors apart from the one that gets reallocated continue
+their functioning in a way similar to the unoptimized monitoring, and report errors as and when they detect any.
+
 \subsection{Memory and Time Efficiency }
 \label{subsec:memory efficiency}
 
@@ -276,10 +302,11 @@ the unoptimized algorithm may create $O(n)$ monitors, assign all of them to a se
 
 There is unfortunately a tradeoff between soundness of the system and the
 number of monitors allocated, which in turn, corresponds to the memory allocated
-for monitoring, and we pick one at a potential loss of the other. However, runtime monitoring is inherently 
-unsound \cite{}. It can report only based on what it has observed. This means errors 
-may not be reported if the paths that encounter them are not exercised. We 
-stretch this limitation a little bit further to achieve substantial benefits in 
+for monitoring, and we pick one at a potential loss of the other.
+%However, runtime monitoring is inherently 
+%unsound \cite{}. It can report only based on what it has observed. This means errors 
+%may not be reported if the paths that encounter them are not exercised.
+We stretch the inherent unsoundness of any monitoring system a little bit further to achieve substantial benefits in 
 terms of memory savings, and at the same time use heuristics that help maintain
 the system's soundness.  As a result, our technique should enable developers to employ runtime 
 monitoring in resource-constrained system settings where the previous 
