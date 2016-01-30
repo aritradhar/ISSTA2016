@@ -124,7 +124,7 @@ monitor for the same set of objects.
 \begin{algorithm}[t]
                       % enter the algorithm environment
 \caption[Algorithm]{Context-Aware Monitoring. Input: $\phi$ = 
-($Q$,$\Sigma$,$\delta$,$q_{0}$,$F$), $\eta=(\beta, \sigma)$ where $\eta$ is an event and $\beta \in 2^O$ 
+($Q$,$\Sigma$,$\delta$,$q_{0}$,$F$, err), $\eta=(\beta, \sigma)$ where $\eta$ is an event and $\beta \in 2^O$ 
 be the set of associated objects and $\sigma \in \Sigma$}          % give the algorithm 
 % a caption
 \label{alg1}                           % and a label for \ref{} commands later 
@@ -235,7 +235,7 @@ unsound \cite{}. It can report only based on what it has observed. This means er
 may not be reported if the paths that encounter them are not exercised. In both of the allocation cases
 discussed above, if the newly allocated monitor gets reallocated in the future before it can report
 any error, we may lose the system's soundness further with respect to the unoptimized approach. The same argument 
-applied to the skip case. Note that all monitors apart from the one that gets reallocated continue
+applies to the skip case. Note that all monitors apart from the one that gets reallocated continue
 their functioning in a way similar to the unoptimized monitoring, and report errors as and when they detect any.
 
 \subsection{Memory and Time Efficiency }
