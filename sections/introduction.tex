@@ -41,7 +41,8 @@ execution times even for similar events owing to the fact that variable number
 of monitors may be associated with each one of those events at different times
 and each one of the 
 monitors needs to be tracked after the occurrence of these events. This number 
-can grow rapidly and is theoretically unbounded~\cite{Purandare:2013}.
+can grow rapidly and is theoretically unbounded. In one study, up to 1548 monitors
+associated with a single object have been reported ~\cite{Purandare:2013}.
 
 Large and unpredictable overheads pose serious challenges to monitoring since 
 they adversely impact the system performance.
@@ -95,7 +96,7 @@ execution times of handling events.
 
 The second key observation that we make is about the occurrence of events.
 We observe that he events on the same or related objects often occur together
-and are temporally separated from the rest. On the same line, we observe
+and are temporally separated from the rest. As a consequence, we observe
 that newly created objects are likely to be associated with recent events.
 We make use of these observations to develop heuristics to prioritize monitors
 in the allocation to maintain the soundness of the system.
