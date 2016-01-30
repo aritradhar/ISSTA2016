@@ -4,7 +4,7 @@
 % \def\tool{\textsc{Tool}\xspace}
 % \def\papertitle{\tool: Memory-Efficient and Time-Bounded Runtime Monitoring for 
 % Resource-Constrained Systems}
-\def\papertitle{Efficient and Context-Aware Finite-State Runtime Monitoring}
+\def\papertitle{Efficient Context-Aware Runtime Monitoring for Finite State Properties}
 \def\pdfauthors{}
 \def\paperkeywords{}
 %% =============================================================
@@ -96,19 +96,19 @@ and time, which makes its application challenging in resource-constrained
 environments. Past research has shown that this challenge is particularly big 
 when the properties the programs are monitored for are finite state, 
 parameterized, and associated with objects that are created in large numbers. In 
-this work, we propose a novel monitoring approach that investigates various 
-trade-offs associated with memory overhead of monitoring, the execution times of 
-monitoring operations, and the error reporting, which are key attributes of 
-resource-constrained systems. Our approach is motivated by two key observations. 
-First, there is prominent behavioral redundancy among monitors resulting in more 
-than one monitors detecting same errors. Second, there is a temporal separation 
-among monitored events that belong to distinct monitors. We leverage these 
+this work, we propose a monitoring approach that investigates various 
+trade-offs associated with the overheads of monitoring, the execution times of 
+monitoring operations, and the error reporting. Our approach is motivated by two key observations.
+First, there is a prominent behavioral redundancy among monitors resulting in more 
+than one monitors detecting same errors. Second, the events on the same or related objects are often
+temporally separated from the rest. We leverage these 
 observations to reduce the number of monitors, and provide compact worst-case 
 time bounds to monitoring operations, without compromising much with the 
-soundness of the optimized monitoring system. Evaluation of our prototype 
-implementation using challenging combinations of finite state properties and 
-DaCapo benchmarks indicates that our approach can effectively control the memory 
-overhead and worst-case execution times without adding extra runtime overhead.
+soundness of the optimized monitoring system. As a side-effect the overall time overhead also decreases.
+Evaluation of the prototype 
+implementation of our approach using challenging combinations of finite state properties and 
+DaCapo benchmarks indicates that the approach can effectively control the 
+overheads and worst-case execution times.
 
 %%
 \end{abstract}
