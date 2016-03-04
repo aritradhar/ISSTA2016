@@ -49,7 +49,7 @@ Purandare:2013}.
   $6909$ & $56873$ & $16031$ & $17017$ & - & $52895$\\\hline
  
  Optimized ($\mathcal{L}(A) = 1$K)  & $13225$ & $13891$ & $6293$ & $52857$ &
- $18406$ & $13249$ & $6960$ & $55314$ & $16681$ & $17940$ & - & $54080$\\\hline
+ $18406$ & $13249$ & $6960$ & $55314$ & $16681$ & $17940$ & * & $54080$\\\hline
   
   Optimized ($\mathcal{L}(A) = 30$K)  & $15161$ & $14953$ & $6794$ & $53305$ &
   - & - & - & - & - & - & - & -\\\hline
@@ -57,7 +57,7 @@ Purandare:2013}.
 
 \end{tabular}
 \caption{Runtime (ms.) of \dacapo\ benchmarks, $\mathcal{L}(A)$ denotes
-\#error reported.}
+size of monitor pool and - denotes no events corresponding to the property.}
 \label{table:time}
 \end{table*}
 
@@ -249,6 +249,21 @@ allocation and \#monitor limit respectively.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+\begin{table}[b]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline    
+
+\textbf{bloat} & \textbf{avrora} & \textbf{pmd} & \textbf{chart} \\\hline
+$3261$ & $4414$ & $4025$ & $4494$\\\hline
+
+\end{tabular}
+\caption{Runtime (ms.) or original \dacapo\ benchmarks}
+\label{table:time}
+\end{table}
+
 \subsection{Resource Consumption}
 \label{sec:evaluation:resource}
 
@@ -291,10 +306,11 @@ We now address \textbf{RQ3}, \ie\ bound on worst case execution time. We
 experiment on \bloat\ and observe the execution time with both
 \javamop\ generated aspects and our optimized aspect. The rationale behind choosing
 only the \bloat\ for this experiment is that we notice very high number of
-monitors associated to single object in \unsafeiter property 
+monitors associated to a single object in \unsafeiter\ property 
 hence making monitoring hard.
 Table~\ref{table:eventTime} lists  the execution time corresponding to each
-events. We observe significant reduction of event times across all cases.
+events. We observe significant amount of reduction of event times across all
+cases.
 Specifically, for the \unsafeiter\ property, we observe $\sim$$96\%$ reduction
 of maximum event time for the \texttt{update} event.
 
