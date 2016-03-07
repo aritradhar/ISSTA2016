@@ -92,7 +92,8 @@ size of monitor pool and - denotes no events corresponding to the property.}
      
 
 \end{tabular}
-\caption{Peak Memory consumption (in GB)}
+\caption{Peak Memory consumption (in GB), - denotes no events corresponding to
+the property.}
 \label{table:memory}
 \end{table*}
 
@@ -139,7 +140,8 @@ $\mathcal{N}(E)/\mathcal{N}(C)$  & $\mathcal{N}(A)$
 \caption{Errors reported and monitors generated for different properties.
 $\mathcal{N}(E)$, $\mathcal{N}(C)$ $\mathcal{N}(A)$ and $\mathcal{L}(A)$ denote
 \#error reported, \#unique contexts where errors are encountered, \#monitor
-allocation and \#monitor limit respectively.}
+allocation and \#monitor limit respectively. - denotes no events corresponding
+to the property.}
 \label{table:errorreporting1}
 \end{table*}
 
@@ -253,14 +255,15 @@ allocation and \#monitor limit respectively.}
 \begin{table}[b]
 \centering
 \small
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline    
 
-\textbf{bloat} & \textbf{avrora} & \textbf{pmd} & \textbf{chart} \\\hline
-$3261$ & $4414$ & $4025$ & $4494$\\\hline
-
+&\textbf{bloat} & \textbf{avrora} & \textbf{pmd} & \textbf{chart} \\\hline
+Time (ms.) & $3261$ & $4414$ & $4025$ & $4494$\\\hline
+Memory(MB) & $943$ & $161$ & $134$ & $210$\\\hline 
 \end{tabular}
-\caption{Runtime (ms.) or original \dacapo\ benchmarks}
+\caption{Runtime (ms.) and memory consumption (MB) of original \dacapo\
+benchmarks}
 \label{table:time}
 \end{table}
 
