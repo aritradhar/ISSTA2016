@@ -100,19 +100,16 @@ and properties. - denotes no monitor/event corresponding to the property.
 \begin{table}[t]
 \centering
 \small
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline
 %\multirow{2}{*}{} & \multicolumn{2}{c|}{HasNext} & 
 % \multicolumn{2}{c|}{UnsafeIterator} \\ \cline{2-5}
- {} & Original & HasNext & UnsafeIterator\\
+ & Original & HasNext & UnsafeIterator & HashSet\\
  \hline
-avrora            & $161$ MB      &       &          \\ 
-\hline
-bloat             & $943$ MB      &     &              \\ 
-\hline
-pmd               & $134$ MB      &      &              \\ 
-\hline
-chart & $210$ MB & & \\\hline
+avrora  & $161$ MB & & &\\\hline
+bloat & $697$ MB & $1062$ MB &  &\\\hline
+pmd  & $134$ MB &  & &\\\hline
+chart & $210$ MB & & &\\\hline
 \end{tabular}
 \caption{Memory consumption for different programs and properties with and 
 without monitoring. The figures in the parentheses are the percentage 
