@@ -158,7 +158,7 @@ large.
 % 
 In fact, we observed that over $1500$ monitors were associated with a single 
 \code{Collection} object when monitoring for \code{UnsafeIterator} property 
-for the \text{bloat} \textsf{DaCapo} benchmark. Since each of these monitors 
+for the \bloat~\dacapo~benchmark. Since each of these monitors 
 needs to be tracked when an event is handled by the corresponding receiver, 
 monitoring all events, thus, becomes non-deterministic in terms of time. 
 Furthermore, not being able to provide guaranteed bounds on the monitored 
@@ -183,7 +183,7 @@ based on their execution context, \ie\ method calls.
 This observation indicates that several monitors catch the same redundant 
 errors, which clearly is not intelligent reporting to the developer. Ideally, 
 the monitors must report only distinct errors, \ie\ $3$ each
-for \textit{bloat} and \textit{pmd}. 
+for \bloat~and \pmd. 
 %\note{This needs to be clarified --- 2 distinct classes, and 3 and 2 errors respectively.}
 Hence, we believe that sampling-based monitoring that leverage the program execution 
 context would be significantly more effective and consume much less resources.
