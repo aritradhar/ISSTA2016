@@ -62,7 +62,7 @@ associated with the related objects, and then tracked for all future events
 related to it. In case a monitor moves to the error state, it reports the error.
 
 \code{Collection}s and \code{Iterator}s are commonly used objects, and also 
-frequent sources of errors \cite{}. Thus, common monitoring systems, like 
+frequent sources of errors. Thus, common monitoring systems, like 
 \textsc{JavaMOP} typically instantiate a \textit{monitor} corresponding to every 
 pair of \code{Collection} and \code{Iterator}, and use it to track the 
 specified finite state properties upon occurrence of every event. For example, 
@@ -115,8 +115,9 @@ chart & $210$ MB & & &\\\hline
 without monitoring. The figures in the parentheses are the percentage 
 overheads. %\note{Get numbers for all benchmarks.}
 }
-\end{table}
 \label{table:consumedmemory}
+\end{table}
+
 
 \begin{challenges}
  \item \textbf{High monitor count}: Typically, in practice, a \code{Collection} 
