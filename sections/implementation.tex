@@ -8,7 +8,7 @@
 We implement a prototype of our approach (as described in~\xref{sec:approach}) 
 in \textsc{Java}. We use \soot~\cite{soot} for program instrumentation, 
 and leverage the \code{ajc} v$1.7$ compiler to weave aspects. The prototype
-is written entirely in \java in $3532$ lines of code (\soot\ instrumentation
+is written entirely in \java\ in $3532$ lines of code (\soot\ instrumentation
 module $334$ and aspect implementation $3198$). We below mention a few other
 salient features of our implementation.
 %\note{How many lines of Java code did it involve?}
@@ -51,10 +51,12 @@ example snippet and its instrumented counterpart.
 % \label{subsec:trace}
 
 \lstset{escapeinside={/*@}{@*/}, language=Java , caption=\bf Light-weight 
-execution context., label=snippet:methodTrace} \begin{figure}[t]
+execution context., label=snippet:methodTrace} 
+\begin{figure}[t]
 \begin{lstlisting}
 long trace; //method stack trace
 int counter = 0;
+int traceLength = 3;
 void insertMethodTrace(int methodID) {
  switch (counter) {
   case 0: id <<= 32; break;
@@ -70,10 +72,11 @@ void insertMethodTrace(int methodID) {
 \end{figure}
 
 We simulate the stack trace by using a circular array containing these method 
-identifiers. The circular array is implemented as a $64$ bit \code{Long} 
-integer. The array is of the format $id_i|id_j|id_k$, where $id_i$ is the 
-method id corresponding to method $\code{f}_i$ and is a $16$ bit integer. A 
-pseudo code of the method stack is described in Code~\ref{snippet:methodTrace}. 
+identifiers. In our implementation, stack trace is of length $3$. The circular
+array is implemented as a $64$ bit \code{Long} integer. The array is of the
+format $id_i|id_j|id_k$, where $id_i$ is the method id corresponding to method
+$\code{f}_i$ and is a $16$ bit integer. A pseudo code of the method stack is
+described in Code~\ref{snippet:methodTrace}.
 Note that the stack trace is populated by bit-wise \code{<<} and \code{|} 
 operations, which makes any query operation over the stack-trace very light 
 weight compared to traditional \texttt{getStackTrace()} call.
