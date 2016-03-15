@@ -46,7 +46,8 @@ the chronological ordering. In case the allocation module chooses to allocate a 
 it picks the next available monitor for allocation. The monitor being allocated could be already in use.
 In this case the monitor is first removed from the existing local pools of the associated 
 objects, and then reallocated to the new objects under consideration. This allocation results in the monitor
-getting added to the local pools that belong to the associated objects. The local pools also have a limit of their mximum size.
+getting added to the local pools that belong to the associated objects. The
+local pools also have a limit of their maximum size.
 In case, any of the concerned local pool is already full, the oldest monitor from the pool is removed and returned to the global pool
 to create room for the new monitor. 
 
