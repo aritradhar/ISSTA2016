@@ -104,16 +104,17 @@ and properties. - denotes no monitor/event corresponding to the property.
 \hline
 %\multirow{2}{*}{} & \multicolumn{2}{c|}{HasNext} & 
 % \multicolumn{2}{c|}{UnsafeIterator} \\ \cline{2-5}
- & Original & HasNext & UnsafeIterator & HashSet\\
+ & Original & HasNext & FailSafeIter & HashSet\\
  \hline
-avrora  & $161$ MB & & &\\\hline
-bloat & $697$ MB & $1062$ MB & $989$ MB  &\\\hline
-pmd  & $134$ MB &  & &\\\hline
-chart & $210$ MB & & &\\\hline
+avrora  & $161$ & $1100\ (583)$& $1250\ (676)$ & $1125\ (598)$\\\hline
+bloat & $697$  & $1062\ (52)$ & $989\ (42)$ & $790\ (13)$\\\hline
+pmd  & $134$ & $800\ (497)$ & $980\ (631)$ & $885\ (560)$\\\hline
+chart & $210$ & $460\ (119)$ & $320\ (52)$ & - \\\hline
 \end{tabular}
-\caption{Memory consumption for different programs and properties with and 
-without monitoring. The figures in the parentheses are the percentage 
-overheads. %\note{Get numbers for all benchmarks.}
+\caption{Memory consumption (in MB) for different programs and properties with
+and without monitoring. The figures in the parentheses are the percentage 
+overheads.  - denotes no events corresponding to
+the property %\note{Get numbers for all benchmarks.}
 }
 \label{table:consumedmemory}
 \end{table}
